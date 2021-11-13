@@ -42,7 +42,7 @@ class window extends container {
         return core::getFFI()->gtk_window_get_modal(core::cast2Widget($this->cdata_instance));
     }
 
-    public function set_default_size(int $width, int $height) {
+    public function set_default_size(int $width = 400, int $height=400) {
        core::getFFI()->gtk_window_set_default_size(core::cast2Widget($this->cdata_instance), $width, $height);
     }
 

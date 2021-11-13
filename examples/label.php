@@ -1,16 +1,16 @@
 <?php
+
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\core;
 use gtk\window;
-use gtk\webView;
+use gtk\label;
 
 $window = new window();
-$window->set_title('php-webkit');
-$window->set_default_size(400, 240);
-$webview = new webView();
-$window->add($webview);
-$webview->loadURL('https://github.com/ghostjat/gtk');
+$window->set_title('php-gtkLabel');
+$window->set_default_size();
+$label = new label('php-ffi for Gtk3');
+$window->add($label);
 $window->show_all();
 $window->connect('delete-event', function(){
     core::main_quit();
