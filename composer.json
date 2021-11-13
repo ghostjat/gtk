@@ -1,3 +1,9 @@
 {
-    "name": "ghost"
+    "name": "ghost/gtk",
+    "autoload": {
+        "psr-4": {
+            "gtk\\": "src/"
+        }
+    },
+    "config":{"optimize-autoloader":true}
 }
