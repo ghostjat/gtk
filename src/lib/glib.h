@@ -92,7 +92,6 @@ typedef gboolean(*GCallback4) (gpointer, gpointer, gpointer, gpointer);
 typedef GCallback1 GSourceFunc;
 typedef GCallback1 GDestroyNotify;
 typedef void (*GChildWatchFunc) (GPid pid, gint status, gpointer user_data);
-
 typedef gpointer GMainContext;
 
 GMainContext g_main_context_default(void);
@@ -103,14 +102,8 @@ guint g_idle_add_full(gint priority,
         gpointer data,
         GDestroyNotify notify);
 
-guint g_timeout_add_full(gint priority,
-        guint interval,
-        GSourceFunc function,
-        gpointer data,
-        GDestroyNotify notify);
-
+guint g_timeout_add_full(gint priority, guint interval, GSourceFunc function, gpointer data, GDestroyNotify notify);
 gboolean g_source_remove(guint tag);
-
 guint g_child_watch_add(GPid pid, GChildWatchFunc function, gpointer data);
 
 enum GPriority {

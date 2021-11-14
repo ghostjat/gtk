@@ -19,7 +19,7 @@ class webView  {
     }
     
     protected function _initWebView() {
-        return $this->ffiWebView = \FFI::load(__DIR__ . "/lib/webView.h");
+        return $this->ffiWebView = \FFI::load(dirname(__DIR__) . "/lib/webView.h");
     }
 
 }

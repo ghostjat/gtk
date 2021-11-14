@@ -39,6 +39,11 @@ class core {
         return $instance->ffi->gtk_main_quit();
     }
     
+    public static function timeout(int $interval, $callback, \FFI\CData $ptr) {
+        return \glib\core::timeout_add($interval, $callback, $ptr);
+    }
+
+
     public static function pString2Char(string $string) {
         $char = \FFI::new("char[" . strlen($string) . "]");
         \FFI::memcpy($char, $string, strlen($string));
@@ -54,7 +59,7 @@ class core {
     }
     
     protected function _init() {
-        $this->ffi = \FFI::load(dirname(__DIR__).'/src/lib/gtk.h');
+        $this->ffi = \FFI::load(dirname(__DIR__).'/lib/gtk.h');
         return $this->ffi->gtk_init(\FFI::addr(\FFI::new('int')),null);
     }
     

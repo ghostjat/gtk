@@ -215,9 +215,53 @@ typedef enum {
   GTK_BUILDER_ERROR_INVALID_ID
 } GtkBuilderError;
 
+typedef enum {
+  GTK_NOTEBOOK_TAB_FIRST,
+  GTK_NOTEBOOK_TAB_LAST
+} GtkNotebookTab;
+typedef enum {
+  GTK_PACK_START,
+  GTK_PACK_END
+} GtkPackType;
+
+typedef enum {
+  GTK_DIALOG_MODAL               = 1 << 0,
+  GTK_DIALOG_DESTROY_WITH_PARENT = 1 << 1,
+  GTK_DIALOG_USE_HEADER_BAR      = 1 << 2
+} GtkDialogFlags;
+
+typedef enum {
+  GTK_RESPONSE_NONE         = -1,
+  GTK_RESPONSE_REJECT       = -2,
+  GTK_RESPONSE_ACCEPT       = -3,
+  GTK_RESPONSE_DELETE_EVENT = -4,
+  GTK_RESPONSE_OK           = -5,
+  GTK_RESPONSE_CANCEL       = -6,
+  GTK_RESPONSE_CLOSE        = -7,
+  GTK_RESPONSE_YES          = -8,
+  GTK_RESPONSE_NO           = -9,
+  GTK_RESPONSE_APPLY        = -10,
+  GTK_RESPONSE_HELP         = -11
+} GtkResponseType;
+
+typedef enum {
+  GTK_BUTTONS_NONE,
+  GTK_BUTTONS_OK,
+  GTK_BUTTONS_CLOSE,
+  GTK_BUTTONS_CANCEL,
+  GTK_BUTTONS_YES_NO,
+  GTK_BUTTONS_OK_CANCEL
+} GtkButtonsType;
+typedef enum {
+  GTK_MESSAGE_INFO,
+  GTK_MESSAGE_WARNING,
+  GTK_MESSAGE_QUESTION,
+  GTK_MESSAGE_ERROR,
+  GTK_MESSAGE_OTHER
+} GtkMessageType;
+
 void g_type_init(void);
 extern const char * g_type_name(GType type);
-
 
 PangoContext * gtk_widget_create_pango_context(GtkWidget *widget);
 PangoContext * gtk_widget_get_pango_context(GtkWidget *widget);
@@ -263,42 +307,6 @@ unsigned long *g_signal_connect_data(void *ptr, const char *signal, GCallback ha
 void g_object_unref(void *ptr);
 
 //GtkDialogWindow
-typedef enum {
-  GTK_DIALOG_MODAL               = 1 << 0,
-  GTK_DIALOG_DESTROY_WITH_PARENT = 1 << 1,
-  GTK_DIALOG_USE_HEADER_BAR      = 1 << 2
-} GtkDialogFlags;
-
-typedef enum {
-  GTK_RESPONSE_NONE         = -1,
-  GTK_RESPONSE_REJECT       = -2,
-  GTK_RESPONSE_ACCEPT       = -3,
-  GTK_RESPONSE_DELETE_EVENT = -4,
-  GTK_RESPONSE_OK           = -5,
-  GTK_RESPONSE_CANCEL       = -6,
-  GTK_RESPONSE_CLOSE        = -7,
-  GTK_RESPONSE_YES          = -8,
-  GTK_RESPONSE_NO           = -9,
-  GTK_RESPONSE_APPLY        = -10,
-  GTK_RESPONSE_HELP         = -11
-} GtkResponseType;
-
-typedef enum {
-  GTK_BUTTONS_NONE,
-  GTK_BUTTONS_OK,
-  GTK_BUTTONS_CLOSE,
-  GTK_BUTTONS_CANCEL,
-  GTK_BUTTONS_YES_NO,
-  GTK_BUTTONS_OK_CANCEL
-} GtkButtonsType;
-typedef enum {
-  GTK_MESSAGE_INFO,
-  GTK_MESSAGE_WARNING,
-  GTK_MESSAGE_QUESTION,
-  GTK_MESSAGE_ERROR,
-  GTK_MESSAGE_OTHER
-} GtkMessageType;
-
 GtkWidget* gtk_message_dialog_new (GtkWidget *parent, GtkDialogFlags  flags, GtkMessageType  type, GtkButtonsType  buttons, const gchar    *message_format, ...);
 GtkWidget* gtk_message_dialog_new_with_markup (GtkWidget *parent, GtkDialogFlags  flags, GtkMessageType  type, GtkButtonsType  buttons, const gchar    *message_format, ...);
 void gtk_message_dialog_set_markup (GtkWidget *message_dialog, const gchar *str);
@@ -371,6 +379,79 @@ const char *gtk_builder_get_translation_domain(GtkBuilder *builder);
 void gtk_builder_set_application(GtkBuilder *builder, GtkApplication *application);
 GtkApplication *gtk_builder_get_application(GtkBuilder *builder);
 
+//GtkNoteBook
+
+
+GtkWidget * gtk_notebook_new  (void);
+gint gtk_notebook_append_page (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
+gint gtk_notebook_append_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
+gint gtk_notebook_prepend_page      (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
+gint gtk_notebook_prepend_page_menu (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
+gint gtk_notebook_insert_page       (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, gint position);
+gint gtk_notebook_insert_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label, gint position);
+void gtk_notebook_remove_page       (GtkWidget *notebook, gint page_num);
+void         gtk_notebook_set_group_name (GtkWidget *notebook,
+                                          const gchar *group_name);
+const gchar *gtk_notebook_get_group_name (GtkWidget *notebook);
+gint       gtk_notebook_get_current_page (GtkWidget *notebook);
+GtkWidget* gtk_notebook_get_nth_page     (GtkWidget *notebook, gint page_num);
+gint       gtk_notebook_get_n_pages      (GtkWidget *notebook);
+gint       gtk_notebook_page_num         (GtkWidget *notebook, GtkWidget   *child);
+void       gtk_notebook_set_current_page (GtkWidget *notebook, gint page_num);
+void       gtk_notebook_next_page        (GtkWidget *notebook);
+void       gtk_notebook_prev_page        (GtkWidget *notebook);
+void     gtk_notebook_set_show_border    (GtkWidget *notebook, gboolean show_border);
+gboolean gtk_notebook_get_show_border      (GtkWidget     *notebook);
+void     gtk_notebook_set_show_tabs        (GtkWidget     *notebook, gboolean show_tabs);
+gboolean gtk_notebook_get_show_tabs        (GtkWidget     *notebook);
+void     gtk_notebook_set_tab_pos          (GtkWidget     *notebook,
+				            GtkPositionType  pos);
+GtkPositionType gtk_notebook_get_tab_pos   (GtkWidget     *notebook);
+void     gtk_notebook_set_scrollable       (GtkWidget     *notebook,
+					    gboolean         scrollable);
+gboolean gtk_notebook_get_scrollable       (GtkWidget     *notebook);
+void gtk_notebook_popup_enable  (GtkWidget *notebook);
+void gtk_notebook_popup_disable (GtkWidget *notebook);
+GtkWidget * gtk_notebook_get_tab_label    (GtkWidget *notebook,
+					   GtkWidget   *child);
+void gtk_notebook_set_tab_label           (GtkWidget *notebook,
+					   GtkWidget   *child,
+					   GtkWidget   *tab_label);
+void          gtk_notebook_set_tab_label_text (GtkWidget *notebook,
+                                               GtkWidget   *child,
+                                               const gchar *tab_text);
+const gchar * gtk_notebook_get_tab_label_text (GtkWidget *notebook,
+                                               GtkWidget   *child);
+GtkWidget * gtk_notebook_get_menu_label   (GtkWidget *notebook,
+					   GtkWidget   *child);
+void gtk_notebook_set_menu_label          (GtkWidget *notebook,
+					   GtkWidget   *child,
+					   GtkWidget   *menu_label);
+void          gtk_notebook_set_menu_label_text (GtkWidget *notebook,
+                                                GtkWidget   *child,
+                                                const gchar *menu_text);
+const gchar * gtk_notebook_get_menu_label_text (GtkWidget *notebook,
+							GtkWidget   *child);
+void gtk_notebook_reorder_child           (GtkWidget *notebook,
+					   GtkWidget   *child,
+					   gint         position);
+gboolean gtk_notebook_get_tab_reorderable (GtkWidget *notebook,
+					   GtkWidget   *child);
+void gtk_notebook_set_tab_reorderable     (GtkWidget *notebook,
+					   GtkWidget   *child,
+					   gboolean     reorderable);
+gboolean gtk_notebook_get_tab_detachable  (GtkWidget *notebook,
+					   GtkWidget   *child);
+void gtk_notebook_set_tab_detachable      (GtkWidget *notebook,
+					   GtkWidget   *child,
+					   gboolean     detachable);
+void gtk_notebook_detach_tab              (GtkWidget *notebook,
+                                           GtkWidget   *child);
+GtkWidget* gtk_notebook_get_action_widget (GtkWidget *notebook,
+                                           GtkPackType  pack_type);
+void       gtk_notebook_set_action_widget (GtkWidget *notebook,
+                                           GtkWidget   *widget,
+                                           GtkPackType  pack_type);
 //GtkCalendar
 typedef enum {
   GTK_CALENDAR_SHOW_HEADING		= 1 << 0,
@@ -402,6 +483,10 @@ void gtk_spinner_stop(GtkWidget *spinner);
 
 //GtkBox
 GtkWidget *gtk_box_new(int orientation, int space);
+void  gtk_box_pack_start (GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
+void gtk_box_pack_end (GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
+gint gtk_box_get_spacing (GtkWidget *box);
+void gtk_box_set_spacing (GtkWidget *box, gint spacing);
 
 //container 
 void gtk_container_add(GtkWidget *widgetObj, GtkWidget *child);
@@ -463,6 +548,16 @@ GtkTextBuffer *gtk_text_view_get_buffer(GtkWidget *text_view);
 
 
 //GtkImage
+typedef enum {
+  GTK_IMAGE_EMPTY,
+  GTK_IMAGE_PIXBUF,
+  GTK_IMAGE_STOCK,
+  GTK_IMAGE_ICON_SET,
+  GTK_IMAGE_ANIMATION,
+  GTK_IMAGE_ICON_NAME,
+  GTK_IMAGE_GICON
+} GtkImageType;
+
 GtkWidget *gtk_image_new();
 GtkWidget *gtk_image_new_from_file(const char *filename);
 GtkWidget *gtk_image_new_from_icon_name(const char *icon_name, int size);
