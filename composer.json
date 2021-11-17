@@ -2,14 +2,31 @@
     "name": "ghostjat/gtk",
     "description": "A php gui toolkit library. php-7.4+ 64 bit is required!",
     "type": "library",
-    "keywords": ["php","Gtk","Widget","Toolkit","Gui","FFI"],
+    "keywords": ["php","Gtk","Widget","Toolkit","Gui","FFI","Desktop","Library"],
     "homepage": "https://github.com/ghostjat/gtk",
+    "license": "LGPL",
+    "authors": [
+        {
+            "name": "Shubham Chaudhary",
+            "email": "ghost.jat@gmail.com",
+            "role": "dev"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ghostjat/gtk/issues?state=open",
+        "source": "https://github.com/ghostjat/gtk",
+        "email":"ghost.jat@gmail.com"
+    },
     "autoload": {
         "psr-4": {
             "gtk\\": "src/gtk/",
             "glib\\":"src/glib/",
             "gobject\\":"src/gobject/"
         }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-ffi": "*"
     },
     "config":{"optimize-autoloader":true}
 }
