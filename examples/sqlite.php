@@ -20,11 +20,11 @@ $window->add($scrollWindow);
 $iter = new treeIter();
 
 $rendere = new cellRendere();
-$cols[] = new treeViewColumn('Date', $rendere->cdata_instance, 'text',0);
-$cols[] = new treeViewColumn('Open', $rendere->cdata_instance, 'text',1);
-$cols[] = new treeViewColumn('High', $rendere->cdata_instance, 'text',2);
-$cols[] = new treeViewColumn('Low', $rendere->cdata_instance, 'text',3);
-$cols[] = new treeViewColumn('Close', $rendere->cdata_instance, 'text',4);
+$cols[] = new treeViewColumn('Date', $rendere, 'text',0);
+$cols[] = new treeViewColumn('Open', $rendere, 'text',1);
+$cols[] = new treeViewColumn('High', $rendere, 'text',2);
+$cols[] = new treeViewColumn('Low', $rendere, 'text',3);
+$cols[] = new treeViewColumn('Close', $rendere, 'text',4);
 
 $view = new treeView();
 $view->set_grid_lines(treeView::GRID_LINES_BOTH);
