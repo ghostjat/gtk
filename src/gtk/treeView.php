@@ -5,6 +5,7 @@ namespace gtk;
 class treeView extends widget {
     
     public $model;
+    const GRID_LINES_BOTH = 1;
     
     public function __construct(\FFI\CData $model = null) {
         parent::__construct();
@@ -16,15 +17,15 @@ class treeView extends widget {
         if($this->model) {
             return $this->ffi->gtk_tree_view_new_with_model($this->model);
         }
-        return $this->ffi->get_tree_view_new();
+        return $this->ffi->gtk_tree_view_new();
     }
     
-    public function append_column(\FFI\CData $column) {
-        return $this->ffi->gtk_tree_view_append_column($this->cdata_instance, $column);
+    public function append_column(treeViewColumn $column) {
+        return $this->ffi->gtk_tree_view_append_column($this->cdata_instance, $column->cdata_instance);
     }
     
-    public function set_model(\FFI\CData $model) {
-        return $this->ffi->gtk_tree_view_set_model($this->cdata_instance, $model);
+    public function set_model(listStore $model) {
+        return $this->ffi->gtk_tree_view_set_model($this->cdata_instance, core::getFFI()->cast('GtkTreeModel*',$model->cdata_instance));
     }
     
     public function set_grid_lines($grid_lines) {

@@ -7,9 +7,9 @@ namespace gtk;
 class listStore {
     public $cdata_instance, $ffi;
     
-    public function __construct(...$type) {
+    public function __construct($type) {
         $this->ffi = core::getFFI();
-        $this->cdata_instance = $this->ffi->gtk_list_store_new(count($type), implode(',', $type));
+        $this->cdata_instance = $this->ffi->gtk_list_store_new(count($type), ...$type);
     }
     
     public function append(\FFI\CData $iter) {
@@ -28,8 +28,8 @@ class listStore {
         return $this->ffi->gtk_list_store_set_value($this->cdata_instance, $iter, $col, $val);
     }
     
-    public function insert_with_values(\FFI\CData $iter, int $pos, array $val = null) {
-        return $this->ffi->gtk_list_store_insert_with_values($this->cdata_instance,$iter, $pos, ...$val);
+    public function insert_with_values(treeIter $iter, int $pos, array $val = null) {
+        return $this->ffi->gtk_list_store_insert_with_values($this->cdata_instance,$iter->cdata_instance, $pos, ...$val);
     }
     
     public function iter_is_valid(\FFI\CData $iter) : bool {

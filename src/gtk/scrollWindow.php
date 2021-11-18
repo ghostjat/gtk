@@ -2,7 +2,7 @@
 
 namespace gtk;
 
-class scrollWindow extends widget {
+class scrollWindow extends container {
     
     public function __construct($hadjustment = null, $vadjustment = null) {
         parent::__construct();

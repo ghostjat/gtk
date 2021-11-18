@@ -53,11 +53,12 @@ class core {
     public static function typeOf(\FFI\CData $cdata_instance) {
         return \FFI::typeof($cdata_instance);
     }
-
-    public function g_type_name($gtype) {
-        return $this->ffi->g_type_name($gtype);
-    }
     
+    public static function object_unref($object) {
+        core::getFFI()->g_object_unref($object);
+    }
+
+
     protected function _init() {
         $this->ffi = \FFI::load(dirname(__DIR__).'/lib/gtk.h');
         return $this->ffi->gtk_init(\FFI::addr(\FFI::new('int')),null);
