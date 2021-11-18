@@ -4,7 +4,7 @@
     "type": "library",
     "keywords": ["php","Gtk","Widget","Toolkit","Gui","FFI","Desktop","Library"],
     "homepage": "https://github.com/ghostjat/gtk",
-    "license": "LGPL",
+    "license": "LGPL-2.1-or-later",
     "authors": [
         {
             "name": "Shubham Chaudhary",
