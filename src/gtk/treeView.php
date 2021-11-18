@@ -5,7 +5,9 @@ namespace gtk;
 class treeView extends widget {
     
     public $model;
-    const GRID_LINES_BOTH = 1;
+    const GRID_LINE_HORIZONTAL = 1,
+            GRID_LINE_VERTICAL = 2,
+            GRID_LINES_BOTH = 3;
     
     public function __construct(\FFI\CData $model = null) {
         parent::__construct();
@@ -28,7 +30,7 @@ class treeView extends widget {
         return $this->ffi->gtk_tree_view_set_model($this->cdata_instance, core::getFFI()->cast('GtkTreeModel*',$model->cdata_instance));
     }
     
-    public function set_grid_lines($grid_lines) {
+    public function set_grid_lines($grid_lines=0) {
         return $this->ffi->gtk_tree_view_set_grid_lines($this->cdata_instance,  $grid_lines);
     }
     
