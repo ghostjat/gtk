@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtksourceview" version="4.0"/>
+  <object class="GtkWindow" id="mainWindow">
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="main_quit" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkScrolledWindow" id="scrollWindow">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkSourceView" id="sourceView">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="left_margin">2</property>
+            <property name="right_margin">2</property>
+            <property name="indent">4</property>
+            <property name="monospace">True</property>
+            <property name="show_line_numbers">True</property>
+            <property name="show_line_marks">True</property>
+            <property name="auto_indent">True</property>
+            <property name="show_right_margin">True</property>
+            <property name="highlight_current_line">True</property>
+            <property name="smart_backspace">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
+
