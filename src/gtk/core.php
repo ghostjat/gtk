@@ -36,7 +36,7 @@ class core {
 
     public static function main_quit() {
         $instance = self::getInstance();
-        return $instance->ffi->gtk_main_quit();
+        $instance->ffi->gtk_main_quit();
     }
     
     public static function timeout(int $interval, $callback, \FFI\CData $ptr) {
@@ -50,7 +50,7 @@ class core {
         return \FFI::cast("char *", $char);
     }
 
-    public static function typeOf(\FFI\CData $cdata_instance) {
+    public static function typeOf(\FFI\CData $cdata_instance): \FFI\CType {
         return \FFI::typeof($cdata_instance);
     }
     
@@ -67,4 +67,5 @@ class core {
     protected function version() {
         return (string) $this->ffi->gtk_check_version();
     }
+    
 }

@@ -180,7 +180,7 @@ class widget {
         $gtype_name = $this->ffi->g_type_name($gtype);
 
         // Convert it to PHP-GTK class
-        $phpgtk_name = "\\Gtk\\" . substr($gtype_name, 3);
+        $phpgtk_name = "\\gtk\\" . substr($gtype_name, 3);
         $php_GtkOBJ = new $phpgtk_name();
         $php_GtkOBJ->cdata_instance = $widget;
 
