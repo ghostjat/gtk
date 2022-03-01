@@ -21,18 +21,18 @@ typedef struct {
     long long __max_align_ll;
     long double __max_align_ld;
 } max_align_t;
-typedef signed char gint8;
+typedef signed char int8;
 typedef unsigned char guint8;
-typedef signed short gint16;
+typedef signed short int16;
 typedef unsigned short guint16;
-typedef signed int gint32;
+typedef signed int int32;
 typedef unsigned int guint32;
-typedef signed long gint64;
+typedef signed long int64;
 typedef unsigned long guint64;
 typedef signed long gssize;
 typedef unsigned long gsize;
-typedef gint64 goffset;
-typedef signed long gintptr;
+typedef int64 goffset;
+typedef signed long intptr;
 typedef unsigned long guintptr;
 typedef int GPid;
 typedef unsigned char __u_char;
@@ -109,7 +109,7 @@ typedef struct _GtkActionable GtkActionable;
 typedef struct _GtkBuilder GtkBuilder;
 typedef struct _GObject GObject;
 typedef struct _GtkWidget GtkWidget;
-typedef struct _GObject GtkContainer;
+typedef struct  GtkWidget GtkContainer;
 typedef struct _GdkPixbuf GdkPixbuf;
 typedef struct _GIcon GIcon;
 typedef struct _GdkPixbufSimpleAnim GdkPixbufSimpleAnim;
@@ -117,7 +117,7 @@ typedef struct _GtkAdjustment GtkAdjustment;
 typedef struct _GtkTextBuffer GtkTextBuffer;
 typedef struct _GtkTextTagTable GtkTextTagTable;
 typedef struct GdkPixbufAnimation;
-typedef struct _GtkTextTag GtkTextTag;
+typedef struct GObject GtkTextTag;
 typedef struct _GdkEvent GdkEvent;
 typedef struct _GdkWindow GdkWindow;
 typedef struct _GdkDevice GdkDevice;
@@ -127,18 +127,21 @@ typedef struct _GObject GtkListStore;
 typedef struct _GObject GtkTreeViewColumn;
 typedef struct _GObject GtkCellRenderer;
 typedef struct _GObject GtkTreeView;
+typedef struct GObject GtkTextMark;
 typedef struct _GtkTreeModel GtkTreeModel;
+typedef struct _GtkTreePath GtkTreePath;
 typedef struct _PangoFontsetSimple PangoFontsetSimple;
 typedef struct _PangoFontsetSimpleClass PangoFontsetSimpleClass;
 typedef struct _PangoFontMapClass PangoFontMapClass;
 typedef struct _PangoContext PangoContext;
 typedef struct _GClosure GClosure;
-
+typedef struct _GtkTreeSortable GtkTreeSortable;
+typedef struct _cairo cairo_t;
+typedef struct {
+} PangoFontDescription;
 struct _GTypeInstance {
-    /*< private >*/
     GType *g_class;
 };
-
 typedef struct _GTypeInstance GTypeInstance;
 
 struct _GtkTreeIter {
@@ -147,7 +150,52 @@ struct _GtkTreeIter {
     void* user_data2;
     void* user_data3;
 };
-
+struct _GtkTextIter {
+  /* GtkTextIter is an opaque datatype; ignore all these fields.
+   * Initialize the iter with gtk_text_buffer_get_iter_*
+   * functions
+   */
+  /*< private >*/
+  gpointer dummy1;
+  gpointer dummy2;
+  int dummy3;
+  int dummy4;
+  int dummy5;
+  int dummy6;
+  int dummy7;
+  int dummy8;
+  gpointer dummy9;
+  gpointer dummy10;
+  int dummy11;
+  int dummy12;
+  /* padding */
+  int dummy13;
+  gpointer dummy14;
+};
+typedef struct _GtkTextIter GtkTextIter;
+typedef struct _GtkTextAttributes GtkTextAttributes;
+typedef struct GObject  GtkTextChildAnchor;
+struct GdkRectangle {
+    int x, y;
+    int width, height;
+};
+typedef struct GdkRectangle GdkRectangle;
+typedef struct _GdkWindow   GdkWindow;
+struct _GdkEventKey
+{
+  int type;
+  GdkWindow *window;
+  gint send_event;
+  guint time;
+  guint state;
+  guint keyval;
+  gint length;
+  gchar *string;
+  guint hardware_keycode;
+  guint group;
+  guint is_modifier : 1;
+}; 
+typedef struct _GdkEventKey   GdkEventKey;
 typedef struct _GtkTreeIter GtkTreeIter;
 typedef void (*GCallback)(gpointer, gpointer);
 typedef void(*GtkBuilderConnectFunc) (GtkBuilder *builder,
@@ -157,6 +205,11 @@ typedef void(*GtkBuilderConnectFunc) (GtkBuilder *builder,
         GObject *connect_object,
         int flags,
         void* user_data);
+
+typedef enum {
+    GTK_SORT_ASCENDING,
+    GTK_SORT_DESCENDING
+} GtkSortType;
 
 typedef enum {
     GTK_ORIENTATION_HORIZONTAL,
@@ -225,7 +278,7 @@ typedef enum {
 } GtkPackType;
 
 typedef enum {
-  GTK_DIALOG_MODAL               = 1 << 0,
+  GTK_DIALOG_MODAL   = 1 << 0,
   GTK_DIALOG_DESTROY_WITH_PARENT = 1 << 1,
   GTK_DIALOG_USE_HEADER_BAR      = 1 << 2
 } GtkDialogFlags;
@@ -274,24 +327,54 @@ typedef enum {
     GTK_INPUT_PURPOSE_TERMINAL,
 }GtkInputPurpose;
 
+/* GdkRGBA */
+typedef struct {
+    gdouble red;
+    gdouble green;
+    gdouble blue;
+    gdouble alpha;
+} GdkRGBA;
+
 void g_type_init(void);
 extern const char * g_type_name(GType type);
 
 PangoContext * gtk_widget_create_pango_context(GtkWidget *widget);
 PangoContext * gtk_widget_get_pango_context(GtkWidget *widget);
-void gtk_widget_add_events(GtkWidget *widget, gint events);
 
+//GtkWidget
+GtkWidget *gtk_widget_new (GType type,const gchar *first_property_name,...);
+void gtk_widget_destroy (GtkWidget *widget);
+bool gtk_widget_in_destruction (GtkWidget *widget);
+void gtk_widget_show (GtkWidget *widget);
+void gtk_widget_show_now (GtkWidget *widget);
+void gtk_widget_show_all(GtkWidget *widget);
+void gtk_widget_hide (GtkWidget *widget);
+void gtk_widget_realize (GtkWidget *widget);
+void gtk_widget_unrealize (GtkWidget *widget);
+void gtk_widget_draw (GtkWidget *widget, cairo_t *cr);
+void gtk_widget_add_events(GtkWidget *widget, int events);
+void gtk_widget_override_font(GtkWidget* widget, PangoFontDescription* font_desc);
 void gtk_widget_queue_allocate(GtkWidget *widget);
 void gtk_widget_queue_draw(GtkWidget *widget);
 void gtk_widget_queue_resize(GtkWidget *widget);
-void gtk_widget_queue_draw_area(GtkWidget *widget, gint x, gint y, gint width, gint height);
+void gtk_widget_queue_draw_area(GtkWidget *widget, int x, int y, int width, int height);
+void gtk_widget_queue_resize_no_redraw (GtkWidget *widget);
+//GdkFrameClock *gtk_widget_get_frame_clock (GtkWidget *widget);
+int gtk_widget_get_scale_factor (GtkWidget *widget);
+bool gtk_widget_is_focus (GtkWidget *widget);
+void gtk_widget_grab_focus (GtkWidget *widget);
+void gtk_widget_set_name (GtkWidget *widget, const gchar *name);
+const gchar * gtk_widget_get_name (GtkWidget *widget);
+void gtk_widget_set_sensitive (GtkWidget *widget,bool sensitive);
+void gtk_widget_set_parent (GtkWidget *widget,GtkWidget *parent);
+void gtk_widget_set_size_request (GtkWidget *widget,int width,int height);
 
 //GtkListStore 
 GtkListStore *gtk_list_store_new(int n_columns, ...);
 void gtk_list_store_append(GtkListStore *list_store, GtkTreeIter *iter);
 void gtk_list_store_set(GtkListStore *list_store, GtkTreeIter *iter, ...);
-void gtk_list_store_insert(GtkListStore *list_store, GtkTreeIter *iter, gint position);
-void gtk_list_store_set_value(GtkListStore *list_store, GtkTreeIter *iter, gint column, GValue *value);
+void gtk_list_store_insert(GtkListStore *list_store, GtkTreeIter *iter, int position);
+void gtk_list_store_set_value(GtkListStore *list_store, GtkTreeIter *iter, int column, GValue *value);
 void gtk_list_store_insert_with_values(GtkListStore *list_store, GtkTreeIter *iter, int position, ...);
 bool gtk_list_store_iter_is_valid(GtkListStore *list_store, GtkTreeIter *iter);
 
@@ -301,56 +384,87 @@ GtkWidget *gtk_tree_view_new_with_model(GtkTreeModel *model);
 int gtk_tree_view_append_column(GtkWidget *tree_view, GtkTreeViewColumn *column);
 void gtk_tree_view_set_model(GtkWidget* tree_view, GtkTreeModel *model);
 void gtk_tree_view_set_grid_lines(GtkWidget *tree_view, GtkTreeViewGridLines grid_lines);
-void gtk_tree_view_set_headers_clickable(GtkWidget *tree_view, gboolean setting);
+void gtk_tree_view_set_headers_clickable(GtkWidget *tree_view, bool setting);
+int gtk_tree_view_insert_column_with_attributes(GtkWidget *tree_view,int position,const char *title, GtkCellRenderer *cell, ...);
 
 GtkTreeViewColumn *gtk_tree_view_column_new_with_attributes(const char *title, GtkCellRenderer *cell, ...);
 void gtk_tree_view_column_set_title(GtkTreeViewColumn *tree_column, const char *title);
 void gtk_tree_view_column_set_reorderable(GtkTreeViewColumn *tree_column, bool reorderable);
 void gtk_tree_view_column_set_sort_indicator(GtkTreeViewColumn *tree_column, bool setting);
 void gtk_tree_view_column_set_resizable(GtkTreeViewColumn *tree_column, bool resizable);
+void gtk_tree_view_column_set_clickable (GtkTreeViewColumn *tree_column, bool clickable);
+void gtk_tree_view_column_set_sort_column_id (GtkTreeViewColumn *tree_column,int sort_column_id);
+
+//GtkCellView
+GtkWidget* gtk_cell_view_new (void);
+GtkWidget* gtk_cell_view_new_with_markup (const gchar* markup);
+GtkWidget* gtk_cell_view_new_with_pixbuf (GdkPixbuf* pixbuf);
+GtkWidget* gtk_cell_view_new_with_text (const gchar* text);
+void gtk_cell_view_set_model (GtkWidget *cell_view, GtkTreeModel *model);
+GtkTreeModel * 	gtk_cell_view_get_model (GtkWidget *cell_view);
+
+//GtkWidget* gtk_cell_view_new_with_context (GtkCellArea* area,GtkCellAreaContext* context);
 
 //GtkTreeModel
 bool gtk_tree_model_get_iter_first(GtkTreeModel *tree_model, GtkTreeIter *iter);
+GtkTreePath *gtk_tree_model_get_path (GtkTreeModel *tree_model, GtkTreeIter *iter);
+
+// GtkTreeSort
+bool gtk_tree_sortable_get_sort_column_id (GtkTreeSortable *sortable,int *sort_column_id, GtkSortType *order);
+void gtk_tree_sortable_set_sort_column_id (GtkTreeSortable *sortable,int sort_column_id,GtkSortType order);
 
 //GtkCellRenderer
 GtkCellRenderer *gtk_cell_renderer_text_new(void);
+GtkCellRenderer *gtk_cell_renderer_pixbuf_new(void);
+GtkCellRenderer *gtk_cell_renderer_toggle_new (void);
 
-int g_application_run(GtkApplication *app, int argc, char **argv);
+bool    gtk_cell_renderer_toggle_get_radio (GtkCellRenderer *toggle);
+void    gtk_cell_renderer_toggle_set_radio (GtkCellRenderer *toggle, bool radio);
+bool    gtk_cell_renderer_toggle_get_active (GtkCellRenderer *toggle);
+void    gtk_cell_renderer_toggle_set_active (GtkCellRenderer *toggle, bool setting);
 
 unsigned long *g_signal_connect_data(void *ptr, const char *signal, GCallback handler, gpointer data, GCallback *destroy, int flags);
 void g_object_unref(void *ptr);
 
 //GtkDialogWindow
+GtkWidget *gtk_dialog_new (void);
+GtkWidget *gtk_dialog_new_with_buttons (const char *title, GtkWidget *parent,int flags,const char *first_button_text,...);
+int gtk_dialog_run (GtkWidget *dialog);
+void gtk_dialog_response (GtkWidget *dialog,int response_id);
+GtkWidget * gtk_dialog_add_button (GtkWidget *dialog,const char *button_text,int response_id);
+void gtk_dialog_add_action_widget (GtkWidget *dialog,GtkWidget *child,int response_id);
+void gtk_dialog_set_default_response (GtkWidget *dialog,int response_id);
 GtkWidget* gtk_message_dialog_new (GtkWidget *parent, GtkDialogFlags  flags, GtkMessageType  type, GtkButtonsType  buttons, const gchar    *message_format, ...);
 GtkWidget* gtk_message_dialog_new_with_markup (GtkWidget *parent, GtkDialogFlags  flags, GtkMessageType  type, GtkButtonsType  buttons, const gchar    *message_format, ...);
 void gtk_message_dialog_set_markup (GtkWidget *message_dialog, const gchar *str);
 void gtk_message_dialog_set_image (GtkWidget *dialog,  GtkWidget *image);
 GtkWidget *gtk_message_dialog_get_image (GtkWidget *dialog);
 GtkWidget *gtk_message_dialog_get_message_area (GtkWidget *message_dialog);
+
 //GtkWindow 
 GtkWidget *gtk_window_new(GtkWindowType);
+void gtk_window_set_title(GtkWidget *win, const char *title);
+void gtk_window_set_default_size(GtkWidget *win, int width, int height);
+const char *gtk_window_get_title(GtkWidget *Win);
+void gtk_window_set_modal(GtkWidget *, bool);
+bool gtk_window_get_modal(GtkWidget *);
+void gtk_window_get_default_size(GtkWidget *window, int *width, int *height);
+void gtk_window_set_position(GtkWidget *, GtkWindowPosition);
+void gtk_window_get_position(GtkWidget *window, int *root_x, int *root_y);
+void gtk_window_set_transient_for(GtkWidget *, GtkWidget *);
+void gtk_window_set_attached_to(GtkWidget *, GtkWidget *);
+void gtk_window_set_destroy_with_parent(GtkWidget *, bool);
+void gtk_window_set_hide_titlebar_when_maximized(GtkWidget *, bool);
 
 //GtkApplication GtkWindow
 GtkApplication *gtk_application_new(const char *app_id, int flags);
 GtkWidget *gtk_application_window_new(GtkApplication *app);
+int g_application_run(GtkApplication *app, int argc, char **argv);
+void gtk_application_window_set_show_menubar(GtkWidget *window, bool show_menubar);
 
 //GtkScrollWindow
 GtkWidget *gtk_scrolled_window_new(GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
 void gtk_scrolled_window_set_policy(GtkWidget *scrolled_window, int hscrollbar_policy, int vscrollbar_policy);
-
-void gtk_application_window_set_show_menubar(GtkWidget *window, bool show_menubar);
-void gtk_window_set_title(GtkWidget *win, const char *title);
-void gtk_window_set_default_size(GtkWidget *win, int width, int height);
-const char *gtk_window_get_title(GtkWidget *Win);
-void gtk_window_set_modal(GtkWidget *, gboolean);
-gboolean gtk_window_get_modal(GtkWidget *);
-void gtk_window_get_default_size(GtkWidget *window, gint *width, gint *height);
-void gtk_window_set_position(GtkWidget *, GtkWindowPosition);
-void gtk_window_get_position(GtkWidget *window, gint *root_x, gint *root_y);
-void gtk_window_set_transient_for(GtkWidget *, GtkWidget *);
-void gtk_window_set_attached_to(GtkWidget *, GtkWidget *);
-void gtk_window_set_destroy_with_parent(GtkWidget *, gboolean);
-void gtk_window_set_hide_titlebar_when_maximized(GtkWidget *, gboolean);
 
 //GtkButton
 GtkWidget *gtk_button_new_with_label(const char *label);
@@ -368,7 +482,7 @@ GtkWidget *gtk_check_button_new(void);
 GtkWidget *gtk_check_button_new_with_label(const gchar *label);
 
 //GtkToggleButton
-gboolean gtk_toggle_button_get_active(GtkWidget *toggle_button);
+bool gtk_toggle_button_get_active(GtkWidget *toggle_button);
 
 //GtkBuilder
 GtkBuilder *gtk_builder_new(void);
@@ -394,36 +508,33 @@ void gtk_builder_set_application(GtkBuilder *builder, GtkApplication *applicatio
 GtkApplication *gtk_builder_get_application(GtkBuilder *builder);
 
 //GtkNoteBook
-
-
 GtkWidget * gtk_notebook_new  (void);
-gint gtk_notebook_append_page (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
-gint gtk_notebook_append_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
-gint gtk_notebook_prepend_page      (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
-gint gtk_notebook_prepend_page_menu (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
-gint gtk_notebook_insert_page       (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, gint position);
-gint gtk_notebook_insert_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label, gint position);
-void gtk_notebook_remove_page       (GtkWidget *notebook, gint page_num);
-void         gtk_notebook_set_group_name (GtkWidget *notebook,
-                                          const gchar *group_name);
+int gtk_notebook_append_page (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
+int gtk_notebook_append_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
+int gtk_notebook_prepend_page      (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label);
+int gtk_notebook_prepend_page_menu (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label);
+int gtk_notebook_insert_page       (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, int position);
+int gtk_notebook_insert_page_menu  (GtkWidget *notebook, GtkWidget   *child, GtkWidget   *tab_label, GtkWidget   *menu_label, int position);
+void gtk_notebook_remove_page       (GtkWidget *notebook, int page_num);
+void gtk_notebook_set_group_name (GtkWidget *notebook, const gchar *group_name);
 const gchar *gtk_notebook_get_group_name (GtkWidget *notebook);
-gint       gtk_notebook_get_current_page (GtkWidget *notebook);
-GtkWidget* gtk_notebook_get_nth_page     (GtkWidget *notebook, gint page_num);
-gint       gtk_notebook_get_n_pages      (GtkWidget *notebook);
-gint       gtk_notebook_page_num         (GtkWidget *notebook, GtkWidget   *child);
-void       gtk_notebook_set_current_page (GtkWidget *notebook, gint page_num);
+int       gtk_notebook_get_current_page (GtkWidget *notebook);
+GtkWidget* gtk_notebook_get_nth_page     (GtkWidget *notebook, int page_num);
+int       gtk_notebook_get_n_pages      (GtkWidget *notebook);
+int       gtk_notebook_page_num         (GtkWidget *notebook, GtkWidget   *child);
+void       gtk_notebook_set_current_page (GtkWidget *notebook, int page_num);
 void       gtk_notebook_next_page        (GtkWidget *notebook);
 void       gtk_notebook_prev_page        (GtkWidget *notebook);
-void     gtk_notebook_set_show_border    (GtkWidget *notebook, gboolean show_border);
-gboolean gtk_notebook_get_show_border      (GtkWidget     *notebook);
-void     gtk_notebook_set_show_tabs        (GtkWidget     *notebook, gboolean show_tabs);
-gboolean gtk_notebook_get_show_tabs        (GtkWidget     *notebook);
+void     gtk_notebook_set_show_border    (GtkWidget *notebook, bool show_border);
+bool gtk_notebook_get_show_border      (GtkWidget     *notebook);
+void     gtk_notebook_set_show_tabs        (GtkWidget     *notebook, bool show_tabs);
+bool gtk_notebook_get_show_tabs        (GtkWidget     *notebook);
 void     gtk_notebook_set_tab_pos          (GtkWidget     *notebook,
-				            GtkPositionType  pos);
+				GtkPositionType  pos);
 GtkPositionType gtk_notebook_get_tab_pos   (GtkWidget     *notebook);
 void     gtk_notebook_set_scrollable       (GtkWidget     *notebook,
-					    gboolean         scrollable);
-gboolean gtk_notebook_get_scrollable       (GtkWidget     *notebook);
+					    bool         scrollable);
+bool gtk_notebook_get_scrollable       (GtkWidget     *notebook);
 void gtk_notebook_popup_enable  (GtkWidget *notebook);
 void gtk_notebook_popup_disable (GtkWidget *notebook);
 GtkWidget * gtk_notebook_get_tab_label    (GtkWidget *notebook,
@@ -432,40 +543,40 @@ void gtk_notebook_set_tab_label           (GtkWidget *notebook,
 					   GtkWidget   *child,
 					   GtkWidget   *tab_label);
 void          gtk_notebook_set_tab_label_text (GtkWidget *notebook,
-                                               GtkWidget   *child,
-                                               const gchar *tab_text);
+           GtkWidget   *child,
+           const gchar *tab_text);
 const gchar * gtk_notebook_get_tab_label_text (GtkWidget *notebook,
-                                               GtkWidget   *child);
+           GtkWidget   *child);
 GtkWidget * gtk_notebook_get_menu_label   (GtkWidget *notebook,
 					   GtkWidget   *child);
 void gtk_notebook_set_menu_label          (GtkWidget *notebook,
 					   GtkWidget   *child,
 					   GtkWidget   *menu_label);
 void          gtk_notebook_set_menu_label_text (GtkWidget *notebook,
-                                                GtkWidget   *child,
-                                                const gchar *menu_text);
+GtkWidget   *child,
+const gchar *menu_text);
 const gchar * gtk_notebook_get_menu_label_text (GtkWidget *notebook,
 							GtkWidget   *child);
 void gtk_notebook_reorder_child           (GtkWidget *notebook,
 					   GtkWidget   *child,
-					   gint         position);
-gboolean gtk_notebook_get_tab_reorderable (GtkWidget *notebook,
+					   int         position);
+bool gtk_notebook_get_tab_reorderable (GtkWidget *notebook,
 					   GtkWidget   *child);
 void gtk_notebook_set_tab_reorderable     (GtkWidget *notebook,
 					   GtkWidget   *child,
-					   gboolean     reorderable);
-gboolean gtk_notebook_get_tab_detachable  (GtkWidget *notebook,
+					   bool     reorderable);
+bool gtk_notebook_get_tab_detachable  (GtkWidget *notebook,
 					   GtkWidget   *child);
 void gtk_notebook_set_tab_detachable      (GtkWidget *notebook,
 					   GtkWidget   *child,
-					   gboolean     detachable);
-void gtk_notebook_detach_tab              (GtkWidget *notebook,
-                                           GtkWidget   *child);
+					   bool     detachable);
+void gtk_notebook_detach_tab  (GtkWidget *notebook,
+       GtkWidget   *child);
 GtkWidget* gtk_notebook_get_action_widget (GtkWidget *notebook,
-                                           GtkPackType  pack_type);
+       GtkPackType  pack_type);
 void       gtk_notebook_set_action_widget (GtkWidget *notebook,
-                                           GtkWidget   *widget,
-                                           GtkPackType  pack_type);
+       GtkWidget   *widget,
+       GtkPackType  pack_type);
 //GtkCalendar
 typedef enum {
   GTK_CALENDAR_SHOW_HEADING		= 1 << 0,
@@ -477,11 +588,11 @@ typedef enum {
 GtkWidget* gtk_calendar_new (void);
 void gtk_calendar_select_month (GtkWidget *calendar, guint month, guint year);
 void gtk_calendar_select_day (GtkWidget *calendar, guint day);
-void       gtk_calendar_mark_day (GtkWidget *calendar, guint day);
+void gtk_calendar_mark_day (GtkWidget *calendar, guint day);
 void gtk_calendar_set_display_options (GtkWidget *calendar, GtkCalendarDisplayOptions flags);
 GtkCalendarDisplayOptions gtk_calendar_get_display_options (GtkWidget *calendar);
 void gtk_calendar_get_date (GtkWidget *calendar, guint *year, guint *month, guint *day);
-gboolean   gtk_calendar_get_day_is_marked (GtkWidget *calendar, guint day);
+bool   gtk_calendar_get_day_is_marked (GtkWidget *calendar, guint day);
 
 //Accel-Label
 GtkWidget *gtk_accel_label_new(const char *string);
@@ -497,10 +608,10 @@ void gtk_spinner_stop(GtkWidget *spinner);
 
 //GtkBox
 GtkWidget *gtk_box_new(int orientation, int space);
-void  gtk_box_pack_start (GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
-void gtk_box_pack_end (GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
-gint gtk_box_get_spacing (GtkWidget *box);
-void gtk_box_set_spacing (GtkWidget *box, gint spacing);
+void  gtk_box_pack_start (GtkWidget *box, GtkWidget *child, bool expand, bool fill, guint padding);
+void gtk_box_pack_end (GtkWidget *box, GtkWidget *child, bool expand, bool fill, guint padding);
+int gtk_box_get_spacing (GtkWidget *box);
+void gtk_box_set_spacing (GtkWidget *box, int spacing);
 
 //container 
 void gtk_container_add(GtkWidget *widgetObj, GtkWidget *child);
@@ -510,10 +621,11 @@ void gtk_container_set_border_width(GtkWidget *container, unsigned int border_wi
 
 //GtkTextTag
 GtkTextTag *gtk_text_tag_new(const char *name);
-
+int gtk_text_tag_get_priority (GtkTextTag *tag);
+void gtk_text_tag_set_priority (GtkTextTag *tag,int priority);
+bool gtk_text_tag_event (GtkTextTag *tag,GObject *event_object,GdkEvent *event,const GtkTextIter *iter);
 //GtkTextTagTable
 GtkTextTagTable *gtk_text_tag_table_new(void);
-//void (*GtkTextTagTableForeach) (GtkTextTag *tag, void* data);
 bool gtk_text_tag_table_add(GtkTextTagTable *table, GtkTextTag *tag);
 void gtk_text_tag_table_remove(GtkTextTagTable *table, GtkTextTag *tag);
 GtkTextTag * gtk_text_tag_table_lookup(GtkTextTagTable *table, const char *name);
@@ -528,38 +640,163 @@ GtkTextTagTable *gtk_text_buffer_get_tag_table(GtkTextBuffer *buffer);
 void gtk_text_buffer_insert(GtkTextBuffer *buffer, int *iter, const char *text);
 GtkTextBuffer *gtk_text_iter_get_buffer(int *iter);
 void gtk_text_buffer_insert_at_cursor(GtkTextBuffer *buffer, const char *text, int len);
-bool gtk_text_buffer_insert_interactive(GtkTextBuffer *buffer,
-        int *iter,
-        const char *text,
-        int len,
-        bool default_editable);
-bool gtk_text_buffer_insert_interactive_at_cursor(GtkTextBuffer *buffer,
-        const char *text,
-        int len,
-        bool default_editable);
-
-void gtk_text_buffer_insert_range(GtkTextBuffer *buffer,
-        int *iter,
-        int *start,
-        int *end);
-
-
-bool gtk_text_buffer_insert_range_interactive(GtkTextBuffer *buffer,
-        int *iter,
-        int *start,
-        int *end,
-        bool default_editable);
-
-
+bool gtk_text_buffer_insert_interactive(GtkTextBuffer *buffer,int *iter,const char *text,int len,bool default_editable);
+bool gtk_text_buffer_insert_interactive_at_cursor(GtkTextBuffer *buffer,const char *text,int len,bool default_editable);
+void gtk_text_buffer_insert_range(GtkTextBuffer *buffer,int *iter,int *start,int *end);
+bool gtk_text_buffer_insert_range_interactive(GtkTextBuffer *buffer,int *iter,int *start,int *end,bool default_editable);
 
 //GtkTextView
 GtkWidget *gtk_text_view_new(void);
 GtkWidget *gtk_text_view_new_with_buffer(GtkTextBuffer *buffer);
 void gtk_text_view_set_buffer(GtkWidget *text_view, GtkTextBuffer *buffer);
 GtkTextBuffer *gtk_text_view_get_buffer(GtkWidget *text_view);
+void gtk_text_view_scroll_to_mark (GtkWidget *text_view,GtkTextMark *mark,double within_margin,bool use_align,double xalign,double yalign);
+bool gtk_text_view_scroll_to_iter (GtkWidget *text_view,GtkTextIter *iter,double within_margin,bool use_align,double xalign,double yalign);
+void gtk_text_view_scroll_mark_onscreen (GtkWidget *text_view,GtkTextMark *mark);
+bool gtk_text_view_move_mark_onscreen (GtkWidget   *text_view, GtkTextMark   *mark);
+bool gtk_text_view_place_cursor_onscreen (GtkWidget   *text_view);
+void gtk_text_view_get_visible_rect      (GtkWidget   *text_view, GdkRectangle  *visible_rect);
+void gtk_text_view_set_cursor_visible    (GtkWidget   *text_view,bool       setting);
+bool gtk_text_view_get_cursor_visible    (GtkWidget   *text_view);
+void gtk_text_view_reset_cursor_blink    (GtkWidget   *text_view);
+void gtk_text_view_get_cursor_locations  (GtkWidget       *text_view,
+    const GtkTextIter *iter,
+    GdkRectangle      *strong,
+    GdkRectangle      *weak);
+void           gtk_text_view_get_iter_location     (GtkWidget   *text_view,
+    const GtkTextIter *iter,
+    GdkRectangle  *location);
+bool       gtk_text_view_get_iter_at_location  (GtkWidget   *text_view,
+    GtkTextIter   *iter,
+    int           x,
+    int           y);
+bool       gtk_text_view_get_iter_at_position  (GtkWidget   *text_view,
+    GtkTextIter   *iter,
+						    int          *trailing,
+    int           x,
+    int           y);
+void           gtk_text_view_get_line_yrange       (GtkWidget       *text_view,
+    const GtkTextIter *iter,
+    int  *y,
+    int  *height);
+
+void           gtk_text_view_get_line_at_y         (GtkWidget       *text_view,
+    GtkTextIter       *target_iter,
+    int   y,
+    int  *line_top);
+void gtk_text_view_buffer_to_window_coords (GtkWidget       *text_view,
+        int  win,
+        int   buffer_x,
+        int   buffer_y,
+        int  *window_x,
+        int  *window_y);
+
+void gtk_text_view_window_to_buffer_coords (GtkWidget       *text_view,
+        int  win,
+        int   window_x,
+        int   window_y,
+        int  *buffer_x,
+        int  *buffer_y);
 
 
+GdkWindow*        gtk_text_view_get_window      (GtkWidget       *text_view,
+ int  win);
 
+int gtk_text_view_get_window_type (GtkWidget       *text_view,
+ GdkWindow         *window);
+
+
+void gtk_text_view_set_border_window_size (GtkWidget       *text_view,
+       int  type,
+       int   size);
+
+int gtk_text_view_get_border_window_size (GtkWidget       *text_view,
+					   int  type);
+
+
+bool gtk_text_view_forward_display_line           (GtkWidget       *text_view,
+       GtkTextIter       *iter);
+
+bool gtk_text_view_backward_display_line          (GtkWidget       *text_view,
+       GtkTextIter       *iter);
+
+bool gtk_text_view_forward_display_line_end       (GtkWidget       *text_view,
+       GtkTextIter       *iter);
+
+bool gtk_text_view_backward_display_line_start    (GtkWidget       *text_view,
+       GtkTextIter       *iter);
+
+bool gtk_text_view_starts_display_line(GtkWidget       *text_view,
+       const GtkTextIter *iter);
+
+bool gtk_text_view_move_visually      (GtkWidget       *text_view,
+       GtkTextIter       *iter,
+       int   count);
+
+
+bool        gtk_text_view_im_context_filter_keypress        (GtkWidget       *text_view,
+     GdkEventKey       *event);
+
+void            gtk_text_view_reset_im_context      (GtkWidget       *text_view);
+
+/* Adding child widgets */
+
+void gtk_text_view_add_child_at_anchor (GtkWidget *text_view,GtkWidget*child, GtkTextChildAnchor   *anchor);
+GtkTextChildAnchor *gtk_text_child_anchor_new (void);
+void gtk_text_view_add_child_in_window (GtkWidget *text_view, GtkWidget *child, int which_window,int xpos,int  ypos);
+void gtk_text_view_move_child          (GtkWidget          *text_view,
+                                        GtkWidget            *child,
+                                        int                  xpos,
+                                        int                  ypos);
+void             gtk_text_view_set_wrap_mode          (GtkWidget      *text_view,
+                                                       int       wrap_mode);
+int      gtk_text_view_get_wrap_mode          (GtkWidget      *text_view);
+void             gtk_text_view_set_editable           (GtkWidget      *text_view,
+                                                       bool          setting);
+bool         gtk_text_view_get_editable           (GtkWidget      *text_view);
+void             gtk_text_view_set_overwrite          (GtkWidget      *text_view,
+						       bool          overwrite);
+bool         gtk_text_view_get_overwrite          (GtkWidget      *text_view);
+void		 gtk_text_view_set_accepts_tab        (GtkWidget	*text_view,bool accepts_tab);
+bool	 gtk_text_view_get_accepts_tab        (GtkWidget	*text_view);
+void             gtk_text_view_set_pixels_above_lines (GtkWidget      *text_view,int pixels_above_lines);
+int             gtk_text_view_get_pixels_above_lines (GtkWidget      *text_view);
+void             gtk_text_view_set_pixels_below_lines (GtkWidget      *text_view,int pixels_below_lines);
+int             gtk_text_view_get_pixels_below_lines (GtkWidget      *text_view);
+void             gtk_text_view_set_pixels_inside_wrap (GtkWidget      *text_view,int pixels_inside_wrap);
+int             gtk_text_view_get_pixels_inside_wrap (GtkWidget      *text_view);
+void    gtk_text_view_set_justification      (GtkWidget      *text_view,int  justification);
+int gtk_text_view_get_justification (GtkWidget      *text_view);
+void  gtk_text_view_set_left_margin (GtkWidget  *text_view, int left_margin);
+int gtk_text_view_get_left_margin        (GtkWidget      *text_view);
+void gtk_text_view_set_right_margin       (GtkWidget      *text_view, int  right_margin);
+int gtk_text_view_get_right_margin       (GtkWidget      *text_view);
+void gtk_text_view_set_top_margin         (GtkWidget      *text_view, int  top_margin);
+int gtk_text_view_get_top_margin         (GtkWidget      *text_view);
+void gtk_text_view_set_bottom_margin      (GtkWidget      *text_view, int  bottom_margin);
+int gtk_text_view_get_bottom_margin       (GtkWidget      *text_view);
+void gtk_text_view_set_indent(GtkWidget      *text_view,int  indent);
+int gtk_text_view_get_indent (GtkWidget      *text_view);
+//void gtk_text_view_set_tabs   (GtkWidget      *text_view, PangoTabArray    *tabs);
+//PangoTabArray*   gtk_text_view_get_tabs   (GtkWidget      *text_view);
+/* note that the return value of this changes with the theme */
+GtkTextAttributes* gtk_text_view_get_default_attributes (GtkWidget    *text_view);
+void gtk_text_view_set_input_purpose      (GtkWidget      *text_view,int   purpose);
+int  gtk_text_view_get_input_purpose      (GtkWidget      *text_view);
+void gtk_text_view_set_input_hints        (GtkWidget      *text_view,int     hints);
+int   gtk_text_view_get_input_hints        (GtkWidget      *text_view);
+void gtk_text_view_set_monospace          (GtkWidget      *text_view,bool          monospace);
+bool         gtk_text_view_get_monospace          (GtkWidget      *text_view);
+
+
+//GtkTextMark
+GtkTextMark *gtk_text_mark_new (const gchar *name,bool left_gravity);
+void gtk_text_mark_set_visible (GtkTextMark *mark,bool setting);
+bool gtk_text_mark_get_visible (GtkTextMark *mark);
+bool gtk_text_mark_get_deleted (GtkTextMark *mark);
+const char *gtk_text_mark_get_name (GtkTextMark *mark);
+GtkTextBuffer *gtk_text_mark_get_buffer (GtkTextMark *mark);
+bool gtk_text_mark_get_left_gravity (GtkTextMark *mark);
 
 //GtkImage
 typedef enum {
@@ -575,17 +812,19 @@ typedef enum {
 GtkWidget *gtk_image_new();
 GtkWidget *gtk_image_new_from_file(const char *filename);
 GtkWidget *gtk_image_new_from_icon_name(const char *icon_name, int size);
-GtkWidget *gtk_image_new_from_gicon(GIcon *icon, int size);
 GtkWidget *gtk_image_new_from_resource(const char *resource_path);
 void gtk_image_set_from_file(GtkWidget *gtkImage, const char *filename);
+//GdkPixbuf *gtk_image_get_pixbuf (GtkImage *image);
 void gtk_image_set_from_pixbuf(GtkWidget *gtkImage, GdkPixbuf *pixbuf);
+//GdkPixbufAnimation *gtk_image_get_animation (GtkImage *image);
 //void gtk_image_set_from_animation (GtkWidget *gtkImage,GdkPixbufAnimation *animation);
+//void gtk_image_get_icon_name (GtkImage *image, const char *icon_name, int size);
 void gtk_image_set_from_icon_name(GtkWidget *gtkImage, const char *icon_name, int size);
 void gtk_image_set_from_resource(GtkWidget *gtkImage, const char *resource_path);
 void gtk_image_clear(GtkWidget *gtkImage);
 void gtk_image_set_pixel_size(GtkWidget *gtkImage, int pixel_size);
 int gtk_image_get_pixel_size(GtkWidget *gtkImage);
-
+//GtkImageType gtk_image_get_storage_type (GtkImage *image);
 //info bar widget
 GtkWidget * gtk_info_bar_new(void);
 GtkWidget *gtk_info_bar_new_with_buttons(const char *first_button_text, ...);
@@ -700,6 +939,10 @@ bool gtk_label_get_track_visited_links(GtkWidget *label);
 
 //GtkScrollbar
 GtkWidget *gtk_scrollbar_new(int orientatioin, GtkAdjustment *adjustment);
+//GtkSpinner
+GtkWidget *gtk_spinner_new (void);
+void gtk_spinner_start (GtkWidget *spinner);
+void gtk_spinner_stop (GtkWidget *spinner);
 
 //GtkAdjustment
 GtkAdjustment *gtk_adjustment_new(double value, double lower, double upper, double step_increment, double page_increment, double page_size);
@@ -709,9 +952,9 @@ GtkWidget *gtk_separator_new(int orientation);
 
 const char *gtk_actionable_get_action_name(GtkActionable *actionable);
 void gtk_actionable_set_action_name(GtkActionable *actionable, const char *action_name);
-void gtk_box_pack_start(GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
-void gtk_box_pack_end(GtkWidget *box, GtkWidget *child, gboolean expand, gboolean fill, guint padding);
-void gtk_widget_show_all(GtkWidget *win);
+void gtk_box_pack_start(GtkWidget *box, GtkWidget *child, bool expand, bool fill, guint padding);
+void gtk_box_pack_end(GtkWidget *box, GtkWidget *child, bool expand, bool fill, guint padding);
+
 void gtk_main(void);
 void gtk_init(int *argc, char ***argv);
 void gtk_main_quit(void);
@@ -773,7 +1016,7 @@ GtkSettings * gtk_settings_get_default(void);
 GtkSettings * gtk_settings_get_for_screen(GdkScreen *screen);
 
 typedef struct _cairo cairo_t;
-gboolean gtk_cairo_should_draw_window(cairo_t *cr, GdkWindow *window);
+bool gtk_cairo_should_draw_window(cairo_t *cr, GdkWindow *window);
 const gchar * gtk_check_version(guint required_major, guint required_minor, guint required_micro);
 GType g_type_from_name(const gchar *name);
 void g_type_ensure(GType type);
@@ -820,7 +1063,7 @@ typedef struct {
 guint g_signal_lookup(const gchar *name, GType itype);
 void g_signal_query(guint signal_id, GSignalQuery *query);
 GClosure *g_cclosure_new_swap(GCallback callback_func, gpointer user_data, GClosureNotify destroy_data);
-gulong g_signal_connect_closure(gpointer instance, const gchar *detailed_signal, GClosure *closure, gboolean after);
+gulong g_signal_connect_closure(gpointer instance, const gchar *detailed_signal, GClosure *closure, bool after);
 
 
 GType g_type_fundamental(GType type_id);
@@ -843,20 +1086,20 @@ typedef struct _GtkEntryClass GtkEntryClass;
 // GtkWidget* gtk_entry_new_with_buffer (GtkEntryBuffer *buffer);
 // GtkEntryBuffer* gtk_entry_get_buffer (GtkEntry *entry);
 // void gtk_entry_set_buffer (GtkEntry *entry, GtkEntryBuffer *buffer);
-void gtk_entry_set_visibility(GtkWidget *entry, gboolean visible);
-gboolean gtk_entry_get_visibility(GtkWidget *entry);
+void gtk_entry_set_visibility(GtkWidget *entry, bool visible);
+bool gtk_entry_get_visibility(GtkWidget *entry);
 void gtk_entry_set_invisible_char(GtkWidget *entry, gunichar ch);
 gunichar gtk_entry_get_invisible_char(GtkWidget *entry);
 void gtk_entry_unset_invisible_char(GtkWidget *entry);
-void gtk_entry_set_has_frame(GtkWidget *entry, gboolean setting);
-gboolean gtk_entry_get_has_frame(GtkWidget *entry);
-void gtk_entry_set_overwrite_mode(GtkWidget *entry, gboolean overwrite);
-gboolean gtk_entry_get_overwrite_mode(GtkWidget *entry);
-void gtk_entry_set_max_length(GtkWidget *entry, gint max);
-gint gtk_entry_get_max_length(GtkWidget *entry);
+void gtk_entry_set_has_frame(GtkWidget *entry, bool setting);
+bool gtk_entry_get_has_frame(GtkWidget *entry);
+void gtk_entry_set_overwrite_mode(GtkWidget *entry, bool overwrite);
+bool gtk_entry_get_overwrite_mode(GtkWidget *entry);
+void gtk_entry_set_max_length(GtkWidget *entry, int max);
+int gtk_entry_get_max_length(GtkWidget *entry);
 guint16 gtk_entry_get_text_length(GtkWidget *entry);
-void gtk_entry_set_activates_default(GtkWidget *entry, gboolean setting);
-gboolean gtk_entry_get_activates_default(GtkWidget *entry);
+void gtk_entry_set_activates_default(GtkWidget *entry, bool setting);
+bool gtk_entry_get_activates_default(GtkWidget *entry);
 void gtk_entry_set_alignment(GtkWidget *entry, gfloat xalign);
 gfloat gtk_entry_get_alignment(GtkWidget *entry);
 // void gtk_entry_set_completion (GtkWidget *entry, GtkWidgetCompletion *completion);
@@ -875,17 +1118,17 @@ void gtk_entry_set_placeholder_text(GtkWidget *entry, const gchar *text);
 // GdkPaintable * gtk_entry_get_icon_paintable (GtkWidget *entry, GtkWidgetIconPosition  icon_pos);
 //const gchar* gtk_entry_get_icon_name(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
 // GIcon* gtk_entry_get_icon_gicon (GtkWidget *entry, GtkWidgetIconPosition  icon_pos);
-//void gtk_entry_set_icon_activatable(GtkWidget *entry, GtkWidgetIconPosition icon_pos, gboolean activatable);
-//gboolean gtk_entry_get_icon_activatable(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
-//void gtk_entry_set_icon_sensitive(GtkWidget *entry, GtkWidgetIconPosition icon_pos, gboolean sensitive);
-//gboolean gtk_entry_get_icon_sensitive(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
-//gint gtk_entry_get_icon_at_pos(GtkWidget *entry, gint x, gint y);
+//void gtk_entry_set_icon_activatable(GtkWidget *entry, GtkWidgetIconPosition icon_pos, bool activatable);
+//bool gtk_entry_get_icon_activatable(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
+//void gtk_entry_set_icon_sensitive(GtkWidget *entry, GtkWidgetIconPosition icon_pos, bool sensitive);
+//bool gtk_entry_get_icon_sensitive(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
+//int gtk_entry_get_icon_at_pos(GtkWidget *entry, int x, int y);
 //void gtk_entry_set_icon_tooltip_text(GtkWidget *entry, GtkWidgetIconPosition icon_pos, const gchar *tooltip);
 //gchar * gtk_entry_get_icon_tooltip_text(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
 //void gtk_entry_set_icon_tooltip_markup(GtkWidget *entry, GtkWidgetIconPosition icon_pos, const gchar *tooltip);
 //gchar * gtk_entry_get_icon_tooltip_markup(GtkWidget *entry, GtkWidgetIconPosition icon_pos);
 // void gtk_entry_set_icon_drag_source (GtkWidget *entry, GtkWidgetIconPosition  icon_pos, GdkContentFormats *formats, GdkDragAction actions);
-//gint gtk_entry_get_current_icon_drag_source(GtkWidget *entry);
+//int gtk_entry_get_current_icon_drag_source(GtkWidget *entry);
 //void gtk_entry_get_icon_area (GtkWidget *entry, GtkWidgetIconPosition icon_pos, GdkRectangle *icon_area);
 void gtk_entry_reset_im_context(GtkWidget *entry);
 void gtk_entry_set_input_purpose (GtkWidget *entry, GtkInputPurpose purpose);
@@ -896,10 +1139,38 @@ GtkInputPurpose gtk_entry_get_input_purpose (GtkWidget *entry);
 // PangoAttrList  *gtk_entry_get_attributes (GtkWidget *entry);
 // void gtk_entry_set_tabs (GtkWidget *entry, PangoTabArray *tabs);
 // PangoTabArray *gtk_entry_get_tabs (GtkWidget *entry);
-gboolean gtk_entry_grab_focus_without_selecting(GtkWidget *entry);
+bool gtk_entry_grab_focus_without_selecting(GtkWidget *entry);
 // void gtk_entry_set_extra_menu (GtkWidget *entry, GMenuModel *model);
 // GMenuModel * gtk_entry_get_extra_menu (GtkWidget *entry);
 
 
 const gchar *gtk_entry_get_text(GtkWidget *entry);
 void gtk_entry_set_text(GtkWidget *entry, const gchar *text);
+
+typedef enum {
+    GTK_FILE_CHOOSER_ACTION_OPEN,
+    GTK_FILE_CHOOSER_ACTION_SAVE,
+    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
+    GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER,
+} GtkFileChooserAction;
+
+GtkWidget* gtk_file_chooser_dialog_new (const gchar *title, GtkWidget *parent, GtkFileChooserAction action, const gchar *first_button_text, ...);
+
+//GtkPaned
+GtkWidget * gtk_paned_new (GtkOrientation orientation);
+void
+gtk_paned_add1 (GtkWidget *paned,
+    GtkWidget *child);
+void
+gtk_paned_add2 (GtkWidget *paned,
+    GtkWidget *child);
+void gtk_paned_pack1 (GtkWidget *paned,GtkWidget *child,bool resize,bool shrink);
+void gtk_paned_pack2 (GtkWidget *paned,GtkWidget *child,bool resize,bool shrink);
+GtkWidget * gtk_paned_get_child1 (GtkWidget *paned);
+GtkWidget * gtk_paned_get_child1 (GtkWidget *paned);
+void gtk_paned_set_position (GtkWidget *paned,int position);
+int gtk_paned_get_position (GtkWidget *paned);
+void gtk_paned_set_wide_handle (GtkWidget *paned,bool wide);
+bool gtk_paned_get_wide_handle (GtkWidget *paned);
+
+

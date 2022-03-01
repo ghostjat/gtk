@@ -3,8 +3,8 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\core;
-use gtk\window;
-use gtk\label;
+use gtk\widget\window;
+use gtk\widget\label;
 
 $window = new window();
 $window->set_title('php-gtkLabel');

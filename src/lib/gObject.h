@@ -45,13 +45,8 @@ gpointer g_object_ref(gpointer object);
 gpointer g_object_ref_sink(gpointer object);
 gboolean g_object_is_floating(gpointer object);
 void g_object_unref(gpointer object);
-void g_object_set(gpointer object,
-        const gchar *first_property_name,
-        ...);
-
-void g_object_get(gpointer object,
-        const gchar *first_property_name,
-        ...);
+void g_object_set(gpointer object,const gchar *first_property_name,...);
+void g_object_get(gpointer object,const gchar *first_property_name,...);
 
 /* signals */
 

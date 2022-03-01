@@ -3,17 +3,16 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\core;
-use gtk\window;
-use gtk\checkButton;
+use gtk\widget\window;
+use gtk\widget\checkButton;
 
 $window = new window();
 $window->set_title('php-checkButton');
 $window->set_default_size();
-$chkBtn = new checkButton();
-$chkBtn->button_new_with_label(PHP_VERSION);
+$chkBtn = new checkButton(PHP_VERSION);
 $window->add($chkBtn);
 $chkBtn->connect('toggled', function()use($chkBtn){
-    if($chkBtn->button_get_active()) {
+    if($chkBtn->get_active()) {
         print 1;
     }
     else {

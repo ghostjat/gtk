@@ -48,9 +48,6 @@ typedef struct _GtkObject GtkSourceCompletionWords;
 void gtk_source_init(void);
 void gtk_source_finalize(void);
 GType gtk_source_view_get_type(void);
-GtkSourceBuffer *gtk_source_buffer_new(void);
-GtkSourceBuffer *gtk_source_buffer_new_with_language(GtkSourceLanguage *language);
-
 GtkWidget *gtk_source_view_new(void);
 GtkWidget *gtk_source_view_new_with_buffer(GtkSourceBuffer *buffer);
 void gtk_source_view_set_show_line_numbers(GtkWidget *view, gboolean show);
@@ -63,36 +60,36 @@ void gtk_source_view_set_indent_on_tab(GtkWidget *view, gboolean enable);
 void gtk_source_view_set_tab_width(GtkWidget *view, int width);
 void gtk_source_view_set_indent_width(GtkWidget *view, int width);
 void gtk_source_view_set_smart_backspace(GtkWidget *view, gboolean smart_backspace);
-
 GtkSourceCompletion *gtk_source_view_get_completion(GtkWidget *view);
+
 GtkSourceCompletionWords * gtk_source_completion_words_new(const gchar *name, const char *null);
 void gtk_source_completion_words_register(GtkSourceCompletionWords *words, GtkSourceBuffer *buffer);
 void gtk_source_completion_words_unregister(GtkSourceCompletionWords *words, GtkSourceBuffer *buffer);
 gboolean gtk_source_completion_add_provider(GtkSourceCompletion *completion, GtkSourceCompletionProvider *provider, const char *error);
+
 GtkSourceCompletionItem * gtk_source_completion_item_new(void);
 void gtk_source_completion_item_set_label(GtkSourceCompletionItem *item, const gchar *label);
 void gtk_source_completion_item_set_markup(GtkSourceCompletionItem *item, const gchar *markup);
 void gtk_source_completion_item_set_text(GtkSourceCompletionItem *item, const gchar *text);
-void gtk_source_completion_item_set_icon(GtkSourceCompletionItem *item,
-        const char *icon);
-void gtk_source_completion_item_set_icon_name(GtkSourceCompletionItem *item,
-        const gchar *icon_name);
-void gtk_source_completion_item_set_info(GtkSourceCompletionItem *item,
-        const gchar *info);
+void gtk_source_completion_item_set_icon(GtkSourceCompletionItem *item,const char *icon);
+void gtk_source_completion_item_set_icon_name(GtkSourceCompletionItem *item,const gchar *icon_name);
+void gtk_source_completion_item_set_info(GtkSourceCompletionItem *item,const gchar *info);
 
 GtkSourceLanguageManager *gtk_source_language_manager_new(void);
 GtkSourceLanguageManager *gtk_source_language_manager_get_default(void);
 const char * const * gtk_source_language_manager_get_language_ids(GtkSourceLanguageManager *lm);
-
 GtkSourceLanguage *gtk_source_language_manager_get_language(GtkSourceLanguageManager *lm, const char *id);
 GtkSourceLanguage *gtk_source_language_manager_guess_language(GtkSourceLanguageManager *lm, const char *filename, const char *content_type);
-GtkSourceLanguage *gtk_source_buffer_get_language(GtkSourceBuffer *buffer);
 
-GtkSourceStyleScheme *gtk_source_buffer_get_style_scheme(GtkSourceBuffer *buffer);
 const char *gtk_source_language_get_id(GtkSourceLanguage *language);
 const char *gtk_source_language_get_name(GtkSourceLanguage *language);
 char ** gtk_source_language_get_mime_types(GtkSourceLanguage *language);
 const char *gtk_source_language_get_style_name(GtkSourceLanguage *language, const char *style_id);
+
+GtkSourceBuffer *gtk_source_buffer_new(void);
+GtkSourceBuffer *gtk_source_buffer_new_with_language(GtkSourceLanguage *language);
+GtkSourceLanguage *gtk_source_buffer_get_language(GtkSourceBuffer *buffer);
+GtkSourceStyleScheme *gtk_source_buffer_get_style_scheme(GtkSourceBuffer *buffer);
 void gtk_source_buffer_set_language(GtkSourceBuffer *buffer, GtkSourceLanguage *language);
 void gtk_source_buffer_set_style_scheme(GtkSourceBuffer *buffer, GtkSourceStyleScheme *scheme);
 void gtk_source_buffer_set_highlight_syntax(GtkSourceBuffer *buffer, bool highlight);

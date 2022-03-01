@@ -9,10 +9,10 @@ PangoFontDescription * pango_font_description_new(void);
 void pango_font_description_free(PangoFontDescription *desc);
 void pango_font_description_set_family(PangoFontDescription *desc, const char *family);
 const char * pango_font_description_get_family(const PangoFontDescription *desc);
-void pango_font_description_set_size(PangoFontDescription *desc, gint size);
-gint pango_font_description_get_size(const PangoFontDescription *desc);
+void pango_font_description_set_size(PangoFontDescription *desc, int size);
+int pango_font_description_get_size(const PangoFontDescription *desc);
 void pango_font_description_set_absolute_size(PangoFontDescription *desc, double size);
-gboolean pango_font_description_get_size_is_absolute(const PangoFontDescription *desc);
+bool pango_font_description_get_size_is_absolute(const PangoFontDescription *desc);
 PangoFontDescription * pango_font_description_from_string(const char *str);
 char * pango_font_description_to_string(const PangoFontDescription *desc);
 

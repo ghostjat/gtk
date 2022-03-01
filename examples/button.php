@@ -2,8 +2,8 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\core;
-use gtk\window;
-use gtk\button;
+use gtk\widget\window;
+use gtk\widget\button;
 
 $window = new window();
 $window->set_title('php-gtkButton');

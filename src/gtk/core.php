@@ -3,7 +3,7 @@
 namespace gtk;
 
 class core {
-    protected $ffi;
+    public $ffi;
     private static $instance;
 
     public function __construct() {
@@ -22,6 +22,9 @@ class core {
         return self::getFFI()->cast('GtkWidget * ', $widget);
     }
     
+    public static function cast2_GTK_TREE_SORTABLE(\FFI\CData $widget){
+        return self::getFFI()->cast('GtkTreeSortable * ', $widget);
+    }
     public static function getInstance() {
         if (self::$instance === null) {
             self::$instance = new self;

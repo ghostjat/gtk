@@ -2,7 +2,7 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-$window = new \gtk\window();
+$window = new \gtk\widget\window();
 $window->set_title('php-gtk');
 $window->set_default_size(250, 250);
 $window->show_all();

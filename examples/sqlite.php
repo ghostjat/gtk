@@ -3,13 +3,13 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\gType;
-use gtk\window;
-use gtk\scrollWindow;
+use gtk\widget\window;
+use gtk\widget\scrollWindow;
 use gtk\treeIter;
-use gtk\treeView;
+use gtk\widget\treeView;
 use gtk\treeViewColumn;
-use gtk\listStore;
-use gtk\cellRendere;
+use gtk\widget\listStore;
+use gtk\cellRendereText;
 
 $window = new window();
 $window->set_title('php-datatable');
@@ -19,12 +19,15 @@ $scrollWindow->set_policy();
 $window->add($scrollWindow);
 $iter = new treeIter();
 
-$rendere = new cellRendere();
+$rendere = new cellRendereText();
 $cols[] = new treeViewColumn('Date', $rendere, 'text',0);
 $cols[] = new treeViewColumn('Open', $rendere, 'text',1);
 $cols[] = new treeViewColumn('High', $rendere, 'text',2);
 $cols[] = new treeViewColumn('Low', $rendere, 'text',3);
 $cols[] = new treeViewColumn('Close', $rendere, 'text',4);
+$cols[] = new treeViewColumn('Volume', $rendere, 'text',5);
+$cols[] = new treeViewColumn('PChange', $rendere, 'text',6);
+$cols[] = new treeViewColumn('%Change', $rendere, 'text',7);
 
 $view = new treeView();
 $view->set_grid_lines(treeView::GRID_LINES_BOTH);
@@ -36,7 +39,7 @@ foreach ($cols as $header) {
     $header->set_sort_indicator();
 }
 
-$model = new listStore([gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,]);
+$model = new listStore([gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING]);
 $i = 0;
 try {
     $db = new PDO('sqlite://home/ghost/projects/cli/php-stock/sqlite/stock.sqlite');
@@ -45,14 +48,17 @@ try {
     echo $e->getMessage();
 }
 $sql = $db->query('select * from tatamotors');
-    
+
 while ($v = $sql->fetch(PDO::FETCH_OBJ)) {
     $model->insert_with_values($iter, $i, [
-            0, $v->date,
-            1, $v->open,
-            2, $v->high,
-            3, $v->low,
-            4, $v->close,
+        0, $v->date,
+        1, $v->open,
+        2, $v->high,
+        3, $v->low,
+        4, $v->close,
+        5, $v->volume,
+        6, $v->amount_change,
+        7, $v->percent_change,
         -1
     ]);
     ++$i;

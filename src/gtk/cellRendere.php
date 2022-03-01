@@ -9,6 +9,19 @@ class cellRendere {
     
     public function __construct() {
         $this->ffi = core::getFFI();
-        $this->cdata_instance = $this->ffi->gtk_cell_renderer_text_new();
     }
+    
+    public function foreground(string $color){
+        return \gobject\core::object_set($this->cdata_instance, "foreground", $color, "foreground-set", true);
+    }
+    
+    public function background(string $color) {
+        return \gobject\core::object_set($this->cdata_instance, "background", $color, "background-set", true);
+    }
+    
+    public function editable(){
+        return \gobject\core::object_set($this->cdata_instance, "editable", "", "editable-set", true);
+        
+    }
+    
 }
