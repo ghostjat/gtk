@@ -1,7 +1,7 @@
 <?php
 
 
-namespace gtk\widget;
+namespace gtk\buttons;
 
 class checkButton extends core {
     

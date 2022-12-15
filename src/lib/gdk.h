@@ -251,8 +251,7 @@ typedef enum {
 GdkCursor * gdk_cursor_new(GdkCursorType cursor_type);
 
 /* display */
-typedef struct {
-} GdkDisplay;
+typedef struct _GdkDisplay    GdkDisplay;
 void gdk_display_sync(GdkDisplay *display);
 gboolean gdk_display_has_pending(GdkDisplay *display);
 GdkDisplay * gdk_display_get_default(void);
@@ -294,8 +293,7 @@ void gdk_window_set_opacity(GdkWindow *window, gdouble opacity);
 GdkDisplay * gdk_window_get_display(GdkWindow *window);
 
 /* screen */
-typedef struct {
-} GdkScreen;
+typedef struct _GdkScreen             GdkScreen;
 GdkScreen * gdk_screen_get_default(void);
 GdkWindow * gdk_screen_get_root_window(GdkScreen *screen);
 gint gdk_screen_get_number(GdkScreen *screen);
@@ -308,8 +306,7 @@ gboolean gdk_screen_is_composited(GdkScreen *screen);
 GdkDisplay * gdk_screen_get_display(GdkScreen *screen);
 
 /* GdkDevice */
-typedef struct {
-} GdkDevice;
+typedef struct _GdkDevice             GdkDevice;
 typedef signed char gint8;
 typedef signed short gint16;
 typedef unsigned char guint8;
@@ -434,3 +431,4 @@ void gdk_cairo_set_source_pixbuf(cairo_t *cr,
         gdouble pixbuf_y);
 
 
+typedef struct _GdkGLContext   GdkGLContext;

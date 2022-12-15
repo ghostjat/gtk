@@ -2,7 +2,7 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 use gtk\builder;
 
-$ui = new builder('ui/login.ui');
+$ui = new builder('examples/ui/login.ui');
 $ui->add_callback_symbols(['main_quit','onConnect']);
 $ui->connect_signals(null);
 \gtk\core::main();

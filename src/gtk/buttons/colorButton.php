@@ -1,6 +1,6 @@
 <?php
 
-namespace gtk\widget;
+namespace gtk\buttons;
 
 /**
  * Description of colorButton
@@ -9,10 +9,15 @@ namespace gtk\widget;
  */
 class colorButton extends core{
     
-    public function __construct(float $r, float $g, float $b, float $alpha) {
+    public function __construct(array $rgba = null) {
         parent::__construct();
-        $gdkRGBA = new \gtk\gdk\rgba($r, $g, $b, $alpha);
-        $this->cdata_instance = $this->ffi->gtk_color_button_new_with_rgba($gdkRGBA->cdata_instance);
+        if(!empty($rgba)) {
+            $gdkRGBA = new \gtk\gdk\rgba(...$rgba);
+            $this->cdata_instance = $this->ffi->gtk_color_button_new_with_rgba($gdkRGBA->cdata_instance);
+        }
+        else {
+            $this->cdata_instance = $this->ffi->gtk_color_button_new();
+        }
     }
     
     public function set_title(string $title) {

@@ -19,6 +19,7 @@
     },
     "autoload": {
         "psr-4": {
+            "yf\\":"src/yf/",
             "gtk\\": "src/gtk/",
             "glib\\":"src/glib/",
             "gobject\\":"src/gobject/"
@@ -26,7 +27,9 @@
     },
     "require": {
         "php": ">=7.4",
-        "ext-ffi": "*"
+        "ext-ffi": "*",
+        "scheb/yahoo-finance-api": "^4.3",
+        "google/apiclient": "^2.12"
     },
     "config":{"optimize-autoloader":true}
 }

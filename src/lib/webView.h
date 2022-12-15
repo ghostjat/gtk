@@ -1,5 +1,5 @@
 #define FFI_SCOPE "webview"
-#define FFI_LIB "libwebkit2gtk-4.0.so"
+#define FFI_LIB "libwebkit2gtk-4.0.so.37.57.3"
 
 typedef struct GtkInternal GtkWidget;
 typedef struct _GObject WebKitPermissionRequest;

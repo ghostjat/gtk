@@ -335,11 +335,70 @@ typedef struct {
     gdouble alpha;
 } GdkRGBA;
 
+typedef struct _GtkRange GtkRange;
+typedef struct _GtkScale  GtkScale;
+typedef struct _GtkColorChooser    GtkColorChooser;
+typedef struct _GtkPopover GtkPopover;
+typedef struct _GMenuModel GMenuModel;
+typedef struct _GtkMenu  GtkMenu;
+
+typedef enum {
+    GTK_ARROW_UP,
+    GTK_ARROW_DOWN,
+    GTK_ARROW_LEFT,
+    GTK_ARROW_RIGHT,
+    GTK_ARROW_NONE,
+}GtkArrowType;
+
 void g_type_init(void);
 extern const char * g_type_name(GType type);
 
 PangoContext * gtk_widget_create_pango_context(GtkWidget *widget);
 PangoContext * gtk_widget_get_pango_context(GtkWidget *widget);
+
+//GtkMenuButton
+
+GtkWidget * gtk_menu_button_new (void);
+void	gtk_menu_button_set_popup (GtkWidget *menu_button,GtkWidget *menu);
+GtkMenu *	gtk_menu_button_get_popup ();
+void	gtk_menu_button_set_popover ();
+GtkPopover *	gtk_menu_button_get_popover ();
+void	gtk_menu_button_set_menu_model ();
+GMenuModel *	gtk_menu_button_get_menu_model ();
+void	gtk_menu_button_set_use_popover ();
+gboolean	gtk_menu_button_get_use_popover ();
+void	gtk_menu_button_set_direction ();
+GtkArrowType	gtk_menu_button_get_direction ();
+void	gtk_menu_button_set_align_widget ();
+GtkWidget *	gtk_menu_button_get_align_widget ();
+
+//GtkGlArea
+typedef struct {
+    GQuark domain;
+    gint code;
+    gchar * message;
+} GError;
+typedef struct _GdkGLContext   GdkGLContext;
+
+GtkWidget *	gtk_gl_area_new (void);
+GdkGLContext *	gtk_gl_area_get_context (GtkWidget *area);
+void	gtk_gl_area_make_current (GtkWidget *area);
+void	gtk_gl_area_queue_render (GtkWidget *area);
+void	gtk_gl_area_attach_buffers (GtkWidget *area);
+void	gtk_gl_area_set_error (GtkWidget *area, const GError *error);
+GError *gtk_gl_area_get_error (GtkWidget *area);
+void	gtk_gl_area_set_has_alpha (GtkWidget *area, bool has_alpha);
+gboolean	gtk_gl_area_get_has_alpha (GtkWidget *area);
+void	gtk_gl_area_set_has_depth_buffer (GtkWidget *area, bool has_depth);
+gboolean	gtk_gl_area_get_has_depth_buffer (GtkWidget *area);
+void	gtk_gl_area_set_has_stencil_buffer (GtkWidget *area, bool has_stenchil);
+gboolean	gtk_gl_area_get_has_stencil_buffer (GtkWidget *area);
+void	gtk_gl_area_set_auto_render (GtkWidget *area, bool auto_render);
+gboolean	gtk_gl_area_get_auto_render (GtkWidget *area);
+void	gtk_gl_area_get_required_version (GtkWidget *area, int *major, int *minor);
+void	gtk_gl_area_set_required_version (GtkWidget *area, int *major, int *minor);
+void	gtk_gl_area_set_use_es (GtkWidget *area, bool use_es);
+gboolean	gtk_gl_area_get_use_es (GtkWidget *area);
 
 //GtkWidget
 GtkWidget *gtk_widget_new (GType type,const gchar *first_property_name,...);
@@ -484,6 +543,15 @@ GtkWidget *gtk_check_button_new_with_label(const gchar *label);
 //GtkToggleButton
 bool gtk_toggle_button_get_active(GtkWidget *toggle_button);
 
+//GtkColorButton 
+GtkWidget * gtk_color_button_new ();
+GtkWidget *gtk_color_button_new_with_rgba (const GdkRGBA *rgba);
+void	gtk_color_chooser_get_rgba (GtkColorChooser *chooser, GdkRGBA *color);
+void	gtk_color_chooser_set_rgba (GtkColorChooser *chooser, GdkRGBA *color);
+void gtk_color_button_set_title (GtkWidget *button, const gchar *title);
+const gchar *gtk_color_button_get_title (GtkWidget *button);
+
+
 //GtkBuilder
 GtkBuilder *gtk_builder_new(void);
 GtkBuilder *gtk_builder_new_from_file(const char *filename);
@@ -529,11 +597,9 @@ void     gtk_notebook_set_show_border    (GtkWidget *notebook, bool show_border)
 bool gtk_notebook_get_show_border      (GtkWidget     *notebook);
 void     gtk_notebook_set_show_tabs        (GtkWidget     *notebook, bool show_tabs);
 bool gtk_notebook_get_show_tabs        (GtkWidget     *notebook);
-void     gtk_notebook_set_tab_pos          (GtkWidget     *notebook,
-				GtkPositionType  pos);
+void     gtk_notebook_set_tab_pos          (GtkWidget     *notebook, GtkPositionType  pos);
 GtkPositionType gtk_notebook_get_tab_pos   (GtkWidget     *notebook);
-void     gtk_notebook_set_scrollable       (GtkWidget     *notebook,
-					    bool         scrollable);
+void     gtk_notebook_set_scrollable       (GtkWidget     *notebook, bool scrollable);
 bool gtk_notebook_get_scrollable       (GtkWidget     *notebook);
 void gtk_notebook_popup_enable  (GtkWidget *notebook);
 void gtk_notebook_popup_disable (GtkWidget *notebook);
@@ -577,6 +643,7 @@ GtkWidget* gtk_notebook_get_action_widget (GtkWidget *notebook,
 void       gtk_notebook_set_action_widget (GtkWidget *notebook,
        GtkWidget   *widget,
        GtkPackType  pack_type);
+
 //GtkCalendar
 typedef enum {
   GTK_CALENDAR_SHOW_HEADING		= 1 << 0,
@@ -619,6 +686,30 @@ void gtk_container_remove(GtkWidget *container, GtkWidget *widget);
 unsigned int gtk_container_get_border_width(GtkWidget *container);
 void gtk_container_set_border_width(GtkWidget *container, unsigned int border_width);
 
+
+//GtkScale
+GtkWidget * gtk_scale_new (int orientatioin, GtkAdjustment *adjustment);
+GtkWidget * gtk_scale_new_with_range (GtkOrientation, gdouble min, gdouble max, gdouble step);
+void gtk_scale_set_digits (GtkScale *scale, gint digits);
+void gtk_scale_set_draw_value (GtkScale *scale,bool draw_value);
+void gtk_scale_set_has_origin (GtkScale *scale, bool has_origin);
+void gtk_scale_set_value_pos (GtkScale *scale,GtkPositionType pos);
+int gtk_scale_get_digits (GtkScale *scale);
+bool gtk_scale_get_draw_value (GtkScale *scale);
+bool gtk_scale_get_has_origin (GtkScale *scale);
+GtkPositionType	gtk_scale_get_value_pos (GtkScale *scale);
+//PangoLayout *	gtk_scale_get_layout ()
+//void gtk_scale_get_layout_offsets ();
+void gtk_scale_add_mark (GtkScale *scale,gdouble value,GtkPositionType position,const gchar *markup);
+void gtk_scale_clear_marks (GtkScale *scale);
+
+//GtkSwitch
+
+GtkWidget * gtk_switch_new (void);
+void	gtk_switch_set_active (GtkWidget *sw,gboolean is_active);
+gboolean gtk_switch_get_active (GtkWidget *sw);
+void gtk_switch_set_state (GtkWidget *sw,bool state);
+//gboolean gtk_switch_get_state ();
 //GtkTextTag
 GtkTextTag *gtk_text_tag_new(const char *name);
 int gtk_text_tag_get_priority (GtkTextTag *tag);

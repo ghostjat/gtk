@@ -41,7 +41,7 @@ class window extends container {
         return $this->ffi->gtk_window_get_modal($this->cdata_instance);
     }
 
-    public function set_default_size(int $width = 400, int $height = 400) {
+    public function set_default_size(int $width = 1200, int $height = 700) {
         $this->ffi->gtk_window_set_default_size($this->cdata_instance, $width, $height);
     }
 

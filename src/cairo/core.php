@@ -1,7 +1,6 @@
 <?php
 
-
-namespace gtk\sourceView;
+namespace cairo;
 
 /**
  * Description of core
@@ -11,7 +10,7 @@ namespace gtk\sourceView;
 class core {
     public $ffi;
     private static $instance;
-    
+
     public function __construct() {
         if(is_null($this->ffi)) {
             $this->_init();
@@ -30,9 +29,4 @@ class core {
         }
         return self::$instance;
     }
-    
-    protected function _init() {
-        $this->ffi = \FFI::load(dirname(__DIR__).'/../lib/sourceView.h');
-        $this->ffi->gtk_source_init();
-    }    
 }

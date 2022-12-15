@@ -1,10 +1,15 @@
 <?php
 
-namespace gtk\widget;
 
-class button extends core {
-    
-    protected $label;
+namespace gtk\buttons;
+
+/**
+ * Description of button
+ *
+ * @author ghost
+ */
+class button extends core{
+     
     public function __construct(string $label) {
         parent::__construct();
         $this->label = $label;

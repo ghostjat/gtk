@@ -1,9 +1,9 @@
 <?php
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 use gtk\builder;
 
-$ui = new builder('ui/yolo.ui');
+$ui = new builder('examples/ui/yolo.ui');
 $ui->add_callback_symbols(['main_quit',
     'on_loadImage_clicked',
     'on_saveImage_clicked',

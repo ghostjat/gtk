@@ -42,7 +42,7 @@ foreach ($cols as $header) {
 $model = new listStore([gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING,gType::STRING]);
 $i = 0;
 try {
-    $db = new PDO('sqlite://home/ghost/projects/cli/php-stock/sqlite/stock.sqlite');
+    $db = new PDO('sqlite://home/ghost/database/stock.sqlite');
     $db->exec('PRAGMA journal_mode=wal;');
 } catch (PDOException $e) {
     echo $e->getMessage();
