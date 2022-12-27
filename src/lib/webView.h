@@ -1,5 +1,5 @@
 #define FFI_SCOPE "webview"
-#define FFI_LIB "libwebkit2gtk-4.0.so.37.57.3"
+#define FFI_LIB "libwebkit2gtk-4.0.so.37.57.5"
 
 typedef struct GtkInternal GtkWidget;
 typedef struct _GObject WebKitPermissionRequest;
@@ -7,7 +7,14 @@ typedef struct _WebKitWebView WebKitWebView;
 typedef struct _GObject WebKitUserMediaPermissionRequest;
 typedef struct _WebKitSettings WebKitSettings;
 
+typedef enum {
+    WEBKIT_HARDWARE_ACCELERATION_POLICY_ON_DEMAND,
+    WEBKIT_HARDWARE_ACCELERATION_POLICY_ALWAYS,
+    WEBKIT_HARDWARE_ACCELERATION_POLICY_NEVER
+} WebKitHardwareAccelerationPolicy;
+
 GtkWidget *webkit_web_view_new(void);
+GtkWidget* webkit_web_view_new_with_settings (WebKitSettings* settings)
 void webkit_web_view_load_uri(GtkWidget *web_view, const char *uri);
 void webkit_permission_request_allow(WebKitPermissionRequest *reuest);
 
@@ -49,3 +56,5 @@ bool webkit_settings_get_enable_dns_prefetching (WebKitSettings *settings);
 void webkit_settings_set_enable_dns_prefetching(WebKitSettings *settings,bool enabled);
 bool webkit_settings_get_enable_fullscreen (WebKitSettings *settings);
 void webkit_settings_set_enable_fullscreen (WebKitSettings *settings,bool enabled);
+void webkit_settings_set_enable_tabs_to_links (WebKitSettings* settings,bool enabled);
+void webkit_settings_set_hardware_acceleration_policy (WebKitSettings *settings,WebKitHardwareAccelerationPolicy policy);

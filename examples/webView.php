@@ -3,8 +3,8 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use gtk\core;
-use gtk\webView;
 use gtk\widget\window;
+use gtk\webKit\webView;
 
 $window = new window();
 $window->set_title('php-webkit');
