@@ -1,6 +1,8 @@
 <?php
 
-namespace gtk\widget;
+namespace gtk\layout;
+
+use gtk\widget\core;
 
 class container extends core {
     

@@ -686,7 +686,26 @@ void gtk_container_remove(GtkWidget *container, GtkWidget *widget);
 unsigned int gtk_container_get_border_width(GtkWidget *container);
 void gtk_container_set_border_width(GtkWidget *container, unsigned int border_width);
 
-
+//gtkGrid
+GtkWidget *gtk_grid_new (void);
+void gtk_grid_attach (GtkWidget *grid,GtkWidget *child,int left,int top,int width,int height);
+void gtk_grid_attach_next_to (GtkWidget *grid,GtkWidget *child,GtkWidget *sibling,GtkPositionType side,int width,int height);
+GtkWidget *gtk_grid_get_child_at (GtkWidegt *grid,int left,int top);
+void gtk_grid_insert_row (GtkWidget *grid,int position);
+void gtk_grid_insert_column (GtkWidget *grid,int position);
+void gtk_grid_remove_row (GtkWidget *grid,int position);
+void gtk_grid_remove_column (GtkWidget *grid,int position);
+void gtk_grid_insert_next_to (GtkWidget *grid,GtkWidget *sibling,GtkPositionType side);
+void gtk_grid_set_row_homogeneous (GtkWidget *grid,
+                              bool homogeneous);
+void gtk_grid_set_column_homogeneous (GtkWidget *grid,
+                              bool homogeneous);
+void gtk_grid_set_row_spacing (GtkWidget *grid,int spacing);
+void gtk_grid_set_column_spacing (GtkWidget *grid,int spacing);
+bool gtk_grid_get_row_homogeneous (GtkWidget *grid);
+bool gtk_grid_get_column_homogeneous (GtkWidget *grid);
+int gtk_grid_get_row_spacing (GtkWidget *grid);
+int gtk_grid_get_column_spacing (GtkWidget *grid);
 //GtkScale
 GtkWidget * gtk_scale_new (int orientatioin, GtkAdjustment *adjustment);
 GtkWidget * gtk_scale_new_with_range (GtkOrientation, gdouble min, gdouble max, gdouble step);

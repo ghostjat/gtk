@@ -1,6 +1,6 @@
 <?php
 
-namespace gtk\widget;
+namespace gtk\layout;
 
 /**
  * Description of notebook

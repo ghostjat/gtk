@@ -1,7 +1,8 @@
 <?php
 
-namespace gtk\widget;
+namespace gtk\layout;
 
+use gtk\widget\core;
 /**
  * Description of paned
  * Paned — A widget with two adjustable panes

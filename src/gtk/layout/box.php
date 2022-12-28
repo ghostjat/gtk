@@ -1,6 +1,6 @@
 <?php
 
-namespace gtk\widget;
+namespace gtk\layout;
 
 class box extends container { 
     
