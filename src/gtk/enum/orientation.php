@@ -8,6 +8,6 @@ namespace gtk\enum;
  * @author ghost
  */
 class orientation {
-    public const HORIZONTAL =1,
-            VERTICAL =2;
+    public const HORIZONTAL =0,
+            VERTICAL =1;
 }

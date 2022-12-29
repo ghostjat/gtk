@@ -44,10 +44,10 @@ class paned extends core{
     }
     
     public function set_position(int $pos) {
-        $this->ffi->gtk_paned_set_positon($this->cdata_instance,$pos);
+        $this->ffi->gtk_paned_set_position($this->cdata_instance,$pos);
     }
     
     public function get_position():int {
-        $this->ffi->gtk_paned_get_positon($this->cdata_instance);
+        $this->ffi->gtk_paned_get_position($this->cdata_instance);
     }
 }
