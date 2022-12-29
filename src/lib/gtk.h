@@ -690,7 +690,7 @@ void gtk_container_set_border_width(GtkWidget *container, unsigned int border_wi
 GtkWidget *gtk_grid_new (void);
 void gtk_grid_attach (GtkWidget *grid,GtkWidget *child,int left,int top,int width,int height);
 void gtk_grid_attach_next_to (GtkWidget *grid,GtkWidget *child,GtkWidget *sibling,GtkPositionType side,int width,int height);
-GtkWidget *gtk_grid_get_child_at (GtkWidegt *grid,int left,int top);
+GtkWidget *gtk_grid_get_child_at (GtkWidget *grid,int left,int top);
 void gtk_grid_insert_row (GtkWidget *grid,int position);
 void gtk_grid_insert_column (GtkWidget *grid,int position);
 void gtk_grid_remove_row (GtkWidget *grid,int position);

@@ -19,7 +19,6 @@
     },
     "autoload": {
         "psr-4": {
-            "yf\\":"src/yf/",
             "gtk\\": "src/gtk/",
             "glib\\":"src/glib/",
             "gobject\\":"src/gobject/"
