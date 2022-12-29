@@ -2,6 +2,8 @@
 
 namespace gtk\widget;
 
+use gtk\layout\container;
+
 class window extends container {
 
     protected $name = 'GtkWidget';
