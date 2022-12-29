@@ -1,6 +1,7 @@
 <?php
 
 namespace gtk\widget;
+use gtk\layout\container;
 
 class scrollWindow extends container {
     
