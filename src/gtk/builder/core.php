@@ -85,8 +85,7 @@ class core {
 
     private function _mapObject($phpObj) {
         $obj = json_decode(file_get_contents(dirname(__DIR__).'/builder/map.json'));
-        $ns = $obj->$phpObj;
-        return $ns;
+        return $obj->$phpObj;
     }
 
 }

@@ -14,7 +14,7 @@ typedef enum {
 } WebKitHardwareAccelerationPolicy;
 
 GtkWidget *webkit_web_view_new(void);
-GtkWidget* webkit_web_view_new_with_settings (WebKitSettings* settings)
+GtkWidget *webkit_web_view_new_with_settings (WebKitSettings* settings);
 void webkit_web_view_load_uri(GtkWidget *web_view, const char *uri);
 void webkit_permission_request_allow(WebKitPermissionRequest *reuest);
 

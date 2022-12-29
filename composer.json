@@ -26,9 +26,7 @@
     },
     "require": {
         "php": ">=7.4",
-        "ext-ffi": "*",
-        "scheb/yahoo-finance-api": "^4.3",
-        "google/apiclient": "^2.12"
+        "ext-ffi": "*"
     },
     "config":{"optimize-autoloader":true}
 }
