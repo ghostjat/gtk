@@ -19,20 +19,32 @@ class paned extends core{
         $this->cdata_instance = $this->ffi->gtk_paned_new($orientation);
     }
     
-    public function add1(\gtk\widget\core $child) {
-        $this->ffi->gtk_paned_add1($this->cdata_instance,$child->cdata_instance);
+    public function add1($child) {
+         if($child instanceof \gtk\widget\core){
+            return $this->ffi->gtk_paned_add1($this->cdata_instance,$child->cdata_instance);
+         }
+         return $this->ffi->gtk_paned_add1($this->cdata_instance, \gtk\core::cast2Widget($child->cdata_instance));
     }
     
-    public function add2(\gtk\widget\core $child) {
-        $this->ffi->gtk_paned_add2($this->cdata_instance,$child->cdata_instance);
+    public function add2($child) {
+        if($child instanceof \gtk\widget\core){
+            return $this->ffi->gtk_paned_add2($this->cdata_instance,$child->cdata_instance);
+         }
+         return $this->ffi->gtk_paned_add2($this->cdata_instance, \gtk\core::cast2Widget($child->cdata_instance));
     }
     
-    public function pack1(\gtk\widget\core $child,bool $resize, bool $shrink) {
-        $this->ffi->gtk_paned_pack1($this->cdata_instance,$child->cdata_instance,$resize,$shrink);
+    public function pack1($child,bool $resize, bool $shrink) {
+        if($child instanceof \gtk\widget\core){
+            return $this->ffi->gtk_paned_pack1($this->cdata_instance,$child->cdata_instance,$resize,$shrink);
+         }
+         return $this->ffi->gtk_paned_pack1($this->cdata_instance, \gtk\core::cast2Widget($child->cdata_instance),$resize,$shrink);
     }
     
-    public function pack2(\gtk\widget\core $child,bool $resize, bool $shrink) {
-        $this->ffi->gtk_paned_pack2($this->cdata_instance,$child->cdata_instance,$resize,$shrink);
+    public function pack2($child,bool $resize, bool $shrink) {
+        if($child instanceof \gtk\widget\core){
+            return $this->ffi->gtk_paned_pack2($this->cdata_instance,$child->cdata_instance,$resize,$shrink);
+         }
+         return $this->ffi->gtk_paned_pack2($this->cdata_instance, \gtk\core::cast2Widget($child->cdata_instance),$resize,$shrink);
     }
     
     public function get_child1() {
